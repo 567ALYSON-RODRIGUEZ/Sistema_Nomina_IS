@@ -3,11 +3,18 @@ package com.nomina;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @SpringBootApplication
 public class GestionNominaProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GestionNominaProjectApplication.class, args);
-	}
+        Dotenv dotenv = Dotenv.load();
+        dotenv.entries().forEach(entry -> 
+            System.setProperty(entry.getKey(), entry.getValue())
+        );
+
+        SpringApplication.run(GestionNominaProjectApplication.class, args);
+    }
 
 }
