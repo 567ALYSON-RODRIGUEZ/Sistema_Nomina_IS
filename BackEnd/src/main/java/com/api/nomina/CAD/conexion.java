@@ -1,4 +1,4 @@
-package com.CAD;
+package com.api.nomina.CAD;
 
 import org.springframework.stereotype.Component;
 import io.github.cdimascio.dotenv.Dotenv;

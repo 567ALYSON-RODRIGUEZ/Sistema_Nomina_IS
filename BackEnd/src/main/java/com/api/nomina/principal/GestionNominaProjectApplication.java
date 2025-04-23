@@ -1,4 +1,4 @@
-package com.nomina;
+package com.api.nomina.principal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
