@@ -1,11 +1,11 @@
-package com.api.nomina.principal;
+package com.api.nomina;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.api.nomina")
 public class GestionNominaProjectApplication {
 
 	public static void main(String[] args) {
