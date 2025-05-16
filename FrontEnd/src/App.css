@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+
+.app-container {
+  display: flex;
+}
+
+.main-content {
+  margin-left: 220px;
+  padding: 20px;
+  width: 100%;
+  transition: margin-left 0.3s;
+}
+
+.sidebar.closed ~ .main-content {
+  margin-left: 50px;
+}

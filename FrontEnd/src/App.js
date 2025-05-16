@@ -1,25 +1,37 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import PeriodoNomina from './components/PeriodoNomina';
+import DetalleConceptos from './components/DetalleConceptos';
+import EmpleadoCrud from './components/EmpleadoCrud';
+import Sidebar from './components/Sidebar'; 
 import './App.css';
 
 function App() {
+  const [selected, setSelected] = useState('empleado');
+
+  const renderContent = () => {
+    switch (selected) {
+      case 'empleado':
+        return <EmpleadoCrud />;
+      case 'periodo':
+        return <PeriodoNomina />;
+      case 'detalle':
+        return <DetalleConceptos />;
+      default:
+        return <h2>Bienvenido</h2>;
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <Sidebar onSelect={setSelected} />
+      <div className="main-content">
+        {renderContent()}
+      </div>
     </div>
   );
 }
 
 export default App;
+
+
+

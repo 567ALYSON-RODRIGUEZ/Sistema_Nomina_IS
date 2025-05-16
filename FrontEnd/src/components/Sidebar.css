@@ -1,0 +1,39 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 220px;
+  background-color: #46576b;
+  color: white;
+  transition: width 0.3s;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.sidebar.closed {
+  width: 50px;
+}
+
+.toggle-button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #1a1a1a;
+  text-align: center;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.menu li {
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.menu li:hover {
+  background-color: #444;
+}

@@ -1,0 +1,110 @@
+.detalle-conceptos {
+  width: 90%;
+  max-width: 1000px;
+  margin: 30px auto;
+  border: 1px solid #ccc;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.header {
+  background-color: #d8a318;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.info-empleado {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  gap: 10px 30px;
+}
+
+.info-empleado div {
+  flex: 1 1 200px;
+}
+
+.info-empleado label {
+  font-weight: bold;
+}
+
+.copiar-btn {
+  margin-bottom: 20px;
+  background-color: #003366;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tabla-conceptos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.tabla-conceptos th, .tabla-conceptos td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.tabla-conceptos th {
+  background-color: #f2f2f2;
+}
+
+.totales {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  padding-top: 10px;
+  border-top: 2px solid #ccc;
+}
+
+.cerrar-btn {
+  float: right;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.dato {
+  font-weight: normal;
+  margin-left: 5px;
+  color: #333;
+}
+
+.botones-header {
+  float: right;
+}
+
+.minimizar-btn,
+.cerrar-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.input-empleado {
+  margin-left: 5px;
+  padding: 4px 6px;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+  min-width: 100px;
+}
