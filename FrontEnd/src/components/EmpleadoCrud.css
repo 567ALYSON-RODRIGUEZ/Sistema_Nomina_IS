@@ -7,7 +7,7 @@
 }
 
 
-.barra-superior {
+.barra-superiorec {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,43 +43,43 @@ input[type="text"] {
   border: 1px solid #ccc;
 }
 
-.tabla-empleados {
+.tabla-empleadosc {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
 }
 
-.tabla-empleados thead tr {
+.tabla-empleadosc thead tr {
   background-color: #46576b;
   color: white;
   font-family: 'Courier New', Courier, monospace;
 }
 
-.tabla-empleados th,
-.tabla-empleados td {
+.tabla-empleadosc th,
+.tabla-empleadosc td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
 }
 
-.btn-editar {
-  color: black;
-  background: transparent;
-  font-size: 10px;
-  padding: 8px 12px;
-  border: 1px solid #46576b;
-  cursor: pointer;
-  margin-right: 5px;
-}
+  .btn-editar {
+    color: black;
+    background: transparent;
+    font-size: 10px;
+    padding: 8px 12px;
+    border: 1px solid #46576b;
+    cursor: pointer;
+    margin-right: 5px;
+  }
 
 .btn-eliminar {
-  color: black;
-  background: transparent;
-  border: 1px solid #46576b;
-  font-size: 10px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
+    color: black;
+    background: transparent;
+    border: 1px solid #46576b;
+    font-size: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
 
 .modal {
   position: fixed;

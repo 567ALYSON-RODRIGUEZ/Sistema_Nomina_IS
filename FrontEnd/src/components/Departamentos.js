@@ -16,7 +16,7 @@ function DepartamentosPanel() {
   }, []);
 
   const cargarTodos = () => {
-    axios.get('http://192.168.0.23:8095/departamento/obtenerTodos')
+    axios.get('http://localhost:8095/departamento/obtenerTodos')
       .then(res => setDepartamentos(res.data))
       .catch(err => console.error("Error de axios:", err));
   };
@@ -25,7 +25,7 @@ function DepartamentosPanel() {
     const confirmacion = window.confirm("¿Estás seguro de que deseas eliminar este departamento?");
     if (!confirmacion) return;
 
-    axios.patch(`http://192.168.0.23:8095/departamento/eliminar/${id}`)
+    axios.patch(`http://localhost:8095/departamento/eliminar/${id}`)
       .then(() => {
         alert("Departamento eliminado correctamente.");
         setDepartamentos(departamentos.filter(dep => dep.id_departamento !== id));
@@ -37,7 +37,7 @@ function DepartamentosPanel() {
   };
 
   const crearDepartamento = () => {
-    axios.post('http://192.168.0.23:8095/departamento/crear', nuevoDep)
+    axios.post('http://localhost:8095/departamento/crear', nuevoDep)
       .then(() => {
         alert("Departamento creado.");
         setMostrarModal(false);
@@ -51,7 +51,7 @@ function DepartamentosPanel() {
   };
 
   const actualizarDepartamento = () => {
-    axios.put(`http://192.168.0.23:8095/departamento/actualizar/${editandoDep.id_departamento}`, editandoDep)
+    axios.put(`http://localhost:8095/departamento/actualizar/${editandoDep.id_departamento}`, editandoDep)
       .then(() => {
         alert("Departamento actualizado correctamente.");
         setMostrarModal(false);
@@ -63,9 +63,10 @@ function DepartamentosPanel() {
         alert("No se pudo actualizar el departamento.");
       });
   };
+  
 
   const buscarDepartamentoPorId = () => {
-    axios.get(`http://192.168.0.23:8095/departamento/obtenerPorId/${idBuscar}`)
+    axios.get(`http://localhost:8095/departamento/obtenerPorId/${idBuscar}`)
       .then(res => setDepartamentos([res.data]))
       .catch(err => {
         console.error("Error al buscar:", err);
@@ -80,7 +81,7 @@ function DepartamentosPanel() {
 
   return (
     <div className="contenedor-panel">
-      <div className="barra-superior">
+      <div className="barra-superiord">
         <h2>Gestión de Departamentos</h2>
         <div className="acciones-barra">
           <button className="btn-nuevo" onClick={() => { setEditandoDep(null); setMostrarModal(true); }}>+ Nuevo</button>

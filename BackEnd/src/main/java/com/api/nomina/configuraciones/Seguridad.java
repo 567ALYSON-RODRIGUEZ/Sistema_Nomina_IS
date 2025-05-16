@@ -18,6 +18,9 @@ public class Seguridad {
 			.requestMatchers("/departamento/**").permitAll()
 			.requestMatchers("/puesto/**").permitAll()
 			.requestMatchers("/rol/**").permitAll()
+			.requestMatchers("/empleado/**").permitAll()
+			.requestMatchers("/empresa/**").permitAll()
+			.requestMatchers("/usuario/**").permitAll()
 			.anyRequest().authenticated();
 		
 		return http.build();

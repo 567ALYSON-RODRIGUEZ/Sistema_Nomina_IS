@@ -6,12 +6,16 @@
     box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
   }
   
-  .barra-superior {
+  .barra-superiord {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #252f35;
     font-family:'Courier New', Courier, monospace;
+  flex-wrap: wrap;
+  padding: 10px;
+  color: white;
+
   }
   
   .acciones-barra {

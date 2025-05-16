@@ -100,7 +100,7 @@ function EmpleadoCrud() {
 
   return (
     <div className="contenedor-panel">
-      <div className="barra-superior">
+      <div className="barra-superiorec">
         <h2>Gestión de Empleados</h2>
         <div className="acciones-barra">
           <button className="btn-nuevo" onClick={() => abrirModal()}>+ Nuevo</button>
@@ -148,7 +148,7 @@ function EmpleadoCrud() {
         </div>
       )}
 
-      <table className="tabla-empleados">
+      <table className="tabla-empleadosc">
         <thead>
           <tr>
             <th>Acción</th>
@@ -169,8 +169,8 @@ function EmpleadoCrud() {
           {empleados.map(emp => (
             <tr key={emp.idEmpleado}>
               <td>
-                <button onClick={() => abrirModal(emp)}><FontAwesomeIcon icon={faPen} /></button>
-                <button onClick={() => eliminarEmpleado(emp.idEmpleado)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button className='btn-editar' onClick={() => abrirModal(emp)}><FontAwesomeIcon icon={faPen} /></button>
+                <button className='btn-eliminar' onClick={() => eliminarEmpleado(emp.idEmpleado)}><FontAwesomeIcon icon={faTrash} /></button>
               </td>
               <td>{emp.idEmpleado}</td>
               <td>{emp.nombres}</td>

@@ -16,7 +16,7 @@ function PuestosPanel() {
   }, []);
 
   const cargarTodos = () => {
-    axios.get('http://192.168.0.23:8095/puesto/obtenerTodos')
+    axios.get('http://localhost:8095/puesto/obtenerTodos')
       .then(res => setPuestos(res.data))
       .catch(err => console.error("Error de axios:", err));
   };
@@ -25,7 +25,7 @@ function PuestosPanel() {
     const confirmacion = window.confirm("¿Estás seguro de que deseas eliminar este puesto?");
     if (!confirmacion) return;
 
-    axios.patch(`http://192.168.0.23:8095/puesto/eliminar/${id}`)
+    axios.patch(`http://localhost:8095/puesto/eliminar/${id}`)
       .then(() => {
         alert("Puesto eliminado correctamente.");
         setPuestos(puestos.filter(p => p.id_puesto !== id));
@@ -37,7 +37,7 @@ function PuestosPanel() {
   };
 
   const crearPuesto = () => {
-    axios.post('http://192.168.0.23:8095/puesto/crear', nuevoPuesto)
+    axios.post('http://localhost:8095/puesto/crear', nuevoPuesto)
       .then(() => {
         alert("Puesto creado.");
         setMostrarModal(false);
@@ -51,7 +51,7 @@ function PuestosPanel() {
   };
 
   const actualizarPuesto = () => {
-    axios.put(`http://192.168.0.23:8095/puesto/actualizar/${editandoPuesto.id_puesto}`, editandoPuesto)
+    axios.put(`http://localhost:8095/puesto/actualizar/${editandoPuesto.id_puesto}`, editandoPuesto)
       .then(() => {
         alert("Puesto actualizado correctamente.");
         setMostrarModal(false);
@@ -65,7 +65,7 @@ function PuestosPanel() {
   };
 
   const buscarPuestoPorId = () => {
-    axios.get(`http://192.168.0.23:8095/puesto/obtenerPorId/${idBuscar}`)
+    axios.get(`http://localhost:8095/puesto/obtenerPorId/${idBuscar}`)
       .then(res => setPuestos([res.data]))
       .catch(err => {
         console.error("Error al buscar:", err);
@@ -80,7 +80,7 @@ function PuestosPanel() {
 
   return (
     <div className="contenedor-panel">
-      <div className="barra-superior">
+      <div className="barra-superiorp">
         <h2>Gestión de Puestos</h2>
         <div className="acciones-barra">
           <button className="btn-nuevo" onClick={() => { setEditandoPuesto(null); setMostrarModal(true); }}>+ Nuevo</button>

@@ -6,12 +6,16 @@
     box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
   }
   
-  .barra-superior {
+  .barra-superioru {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #252f35;
-    font-family: 'Courier New', Courier, monospace;
+    font-family:'Courier New', Courier, monospace;
+  flex-wrap: wrap;
+  padding: 10px;
+  color: white;
+
   }
   
   .acciones-barra {
@@ -27,7 +31,7 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   .btn-buscar {
     background-color: #7a8b95;
     color: white;
@@ -43,19 +47,19 @@
     border: 1px solid #ccc;
   }
   
-  .tabla-puestos {
+  .tabla-usuarios {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
   }
-  
-  .tabla-puestos thead tr {
+
+  .tabla-usuarios thead tr {
     background-color: #46576b;
     color: white;
-    font-family: 'Courier New', Courier, monospace;
+    font-family:'Courier New', Courier, monospace;
   }
   
-  .tabla-puestos th, .tabla-puestos td {
+  .tabla-usuarios th, .tabla-usuarios td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
@@ -64,8 +68,8 @@
   .btn-editar {
     color: black;
     background: transparent;
-    font-size: 10px;
-    padding: 8px 12px;
+    font-size: 10px;      
+    padding: 8px 12px;    
     border: 1px solid #46576b;
     cursor: pointer;
     margin-right: 5px;
@@ -75,11 +79,11 @@
     color: black;
     background: transparent;
     border: 1px solid #46576b;
-    font-size: 10px;
-    padding: 8px 12px;
+    font-size: 10px;     
+    padding: 8px 12px;     
     cursor: pointer;
   }
-  
+
   .modal {
     position: fixed;
     top: 0;
@@ -143,4 +147,5 @@
     background-color: #f44336;
     color: white;
   }
+  
   

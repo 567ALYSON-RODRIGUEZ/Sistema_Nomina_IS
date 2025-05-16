@@ -6,12 +6,16 @@
     box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
   }
   
-  .barra-superior {
+  .barra-superiore {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #252f35;
     font-family:'Courier New', Courier, monospace;
+  flex-wrap: wrap;
+  padding: 10px;
+  color: white;
+
   }
   
   .acciones-barra {
@@ -43,19 +47,19 @@
     border: 1px solid #ccc;
   }
   
-  .tabla-departamentos {
+  .tabla-empresas {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
   }
 
-  .tabla-departamentos thead tr {
+  .tabla-empresas thead tr {
     background-color: #46576b;
     color: white;
     font-family:'Courier New', Courier, monospace;
   }
   
-  .tabla-departamentos th, .tabla-departamentos td {
+  .tabla-empresas th, .tabla-empresas td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
@@ -75,8 +79,8 @@
     color: black;
     background: transparent;
     border: 1px solid #46576b;
-    font-size: 10px;       /* Tamaño del ícono/texto */
-    padding: 8px 12px;     /* Más espacio interno */
+    font-size: 10px;      
+    padding: 8px 12px;     
     cursor: pointer;
   }
 
