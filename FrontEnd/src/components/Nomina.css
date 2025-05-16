@@ -1,0 +1,176 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+}
+
+.contenedor-nomina {
+  background-color: white;
+  max-width: 1800px;      /* ✅ Limita ancho máximo */
+  width: 100%;            /* ✅ Se adapta a pantallas más pequeñas */
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.barra-superior {
+  background-color: #c4912f;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.btn-generar {
+  background-color: #d18d00;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* GRID PRINCIPAL */
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  /* ✅ Responsive */
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* CAMPO BÁSICO */
+.campo {
+  display: flex;
+  flex-direction: row;  
+  align-items: center;   
+  gap: 10px;             
+  width: 100%;           /* ✅ Adaptativo */
+  min-width: 0;
+}
+
+.campo label {
+  font-weight: bold;
+  font-size: 14px;
+  min-width: 120px;
+}
+
+/* INPUT */
+.campo input[type="text"],
+.campo input[type="date"] {
+  padding: 5px;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* CAMPO DOBLE: input + texto auxiliar */
+.campo.doble {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.campo.doble label {
+  font-weight: bold;
+  margin: 0;
+}
+
+.campo.doble input {
+  flex: 1;
+}
+
+.campo.doble span {
+  font-size: 12px;
+  white-space: nowrap;
+  color: #333;
+}
+
+/* CAMPO COMPLETO PARA COMENTARIO */
+.campo-completo {
+  grid-column: span 2;
+}
+
+/* CHECKBOXES + BOTÓN */
+.campo.check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+/* BOTÓN CARGAR */
+.campo.boton-carga {
+  display: flex;
+  align-items: flex-end;
+  grid-column: span 1;
+}
+
+.btn-carga {
+  background-color: #003366;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 250px;
+}
+
+/* TABLA DE EMPLEADOS */
+.tabla-empleados {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  background-color: #fffacc;
+}
+
+.tabla-empleados th,
+.tabla-empleados td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.tabla-empleados th {
+  background-color: #eee;
+}
+
+.tabla-empleados td {
+  height: 50px;
+}
+
+/* RESUMEN FINAL */
+.resumen {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* 🔻 MEDIA QUERY: Para pantallas pequeñas */
+@media (max-width: 1024px) {
+  .formulario-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .campo.doble {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .campo.check {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-carga {
+    width: 100%;
+  }
+}
