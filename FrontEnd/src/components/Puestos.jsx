@@ -16,7 +16,13 @@ function PuestosPanel() {
   }, []);
 
   const cargarTodos = () => {
-    axios.get('http://localhost:8095/puesto/obtenerTodos')
+    const token = localStorage.getItem('token')
+
+    axios.get('http://localhost:8095/puesto/obtenerTodos',{
+      headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
       .then(res => setPuestos(res.data))
       .catch(err => console.error("Error de axios:", err));
   };
@@ -25,7 +31,11 @@ function PuestosPanel() {
     const confirmacion = window.confirm("¿Estás seguro de que deseas eliminar este puesto?");
     if (!confirmacion) return;
 
-    axios.patch(`http://localhost:8095/puesto/eliminar/${id}`)
+    axios.patch(`http://localhost:8095/puesto/eliminar/${id}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Puesto eliminado correctamente.");
         setPuestos(puestos.filter(p => p.id_puesto !== id));
@@ -37,7 +47,11 @@ function PuestosPanel() {
   };
 
   const crearPuesto = () => {
-    axios.post('http://localhost:8095/puesto/crear', nuevoPuesto)
+    axios.post('http://localhost:8095/puesto/crear', nuevoPuesto,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Puesto creado.");
         setMostrarModal(false);
@@ -51,7 +65,11 @@ function PuestosPanel() {
   };
 
   const actualizarPuesto = () => {
-    axios.put(`http://localhost:8095/puesto/actualizar/${editandoPuesto.id_puesto}`, editandoPuesto)
+    axios.put(`http://localhost:8095/puesto/actualizar/${editandoPuesto.id_puesto}`, editandoPuesto,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Puesto actualizado correctamente.");
         setMostrarModal(false);
@@ -65,7 +83,11 @@ function PuestosPanel() {
   };
 
   const buscarPuestoPorId = () => {
-    axios.get(`http://localhost:8095/puesto/obtenerPorId/${idBuscar}`)
+    axios.get(`http://localhost:8095/puesto/obtenerPorId/${idBuscar}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(res => setPuestos([res.data]))
       .catch(err => {
         console.error("Error al buscar:", err);

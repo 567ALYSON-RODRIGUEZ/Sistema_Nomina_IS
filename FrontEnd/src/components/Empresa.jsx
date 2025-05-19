@@ -24,7 +24,13 @@ function EmpresasPanel() {
   }, []);
 
   const cargarTodas = () => {
-    axios.get('http://localhost:8095/empresa/obtenerTodos')
+    const token = localStorage.getItem('token');
+
+    axios.get('http://localhost:8095/empresa/obtenerTodos', {
+      headers: {
+      Authorization: `Bearer ${token}`
+      }
+    })
       .then(res => setEmpresas(res.data))
       .catch(err => console.error("Error al cargar empresas:", err));
   };
@@ -33,7 +39,11 @@ function EmpresasPanel() {
     const confirmacion = window.confirm("¿Estás seguro de que deseas eliminar esta empresa?");
     if (!confirmacion) return;
 
-    axios.delete(`http://localhost:8095/empresa/eliminar/${id}`)
+    axios.delete(`http://localhost:8095/empresa/eliminar/${id}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(() => {
         alert("Empresa eliminada correctamente.");
         setEmpresas(empresas.filter(emp => emp.idEmpresa !== id));
@@ -45,7 +55,11 @@ function EmpresasPanel() {
   };
 
   const crearEmpresa = () => {
-    axios.post('http://localhost:8095/empresa/crear', nuevaEmpresa)
+    axios.post('http://localhost:8095/empresa/crear', nuevaEmpresa, {
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Empresa creada.");
         setMostrarModal(false);
@@ -62,7 +76,11 @@ function EmpresasPanel() {
   };
 
   const actualizarEmpresa = () => {
-    axios.put(`http://localhost:8095/empresa/reemplazar/${editandoEmpresa.idEmpresa}`, editandoEmpresa)
+    axios.put(`http://localhost:8095/empresa/reemplazar/${editandoEmpresa.idEmpresa}`, editandoEmpresa,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Empresa actualizada.");
         setMostrarModal(false);
@@ -76,7 +94,11 @@ function EmpresasPanel() {
   };
 
   const buscarEmpresaPorId = () => {
-    axios.get(`http://localhost:8095/empresa/obtenerPorId/${idBuscar}`)
+    axios.get(`http://localhost:8095/empresa/obtenerPorId/${idBuscar}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(res => setEmpresas([res.data]))
       .catch(err => {
         console.error("Error al buscar:", err);

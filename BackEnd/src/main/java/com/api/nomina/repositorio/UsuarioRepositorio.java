@@ -1,8 +1,11 @@
 package com.api.nomina.repositorio;
 
 import java.util.List;
+import java.util.Optional;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -31,4 +34,8 @@ public interface UsuarioRepositorio extends JpaRepository<EUsuario, Integer> {
         @Param("nombre_completo") String nombreCompleto,
         @Param("estado") String estado
     );
+    
+    @Query(value = "SELECT * FROM usuarios WHERE username = :username AND estado = 'Activo'", nativeQuery = true)
+    Optional<EUsuario> findByUsername(@Param("username") String username);
+
 }

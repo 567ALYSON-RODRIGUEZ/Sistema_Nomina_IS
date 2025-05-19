@@ -1,14 +1,25 @@
 package com.api.nomina.controlador;
 
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.api.nomina.datos.DUsuario;
 import com.api.nomina.modelo.EUsuario;
+import com.api.nomina.repositorio.UsuarioRepositorio;
+import com.api.nomina.repositorio.UsuarioRolRepositorio;
+
+import io.jsonwebtoken.Jwts;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +30,57 @@ public class resUsuario {
 
     @Autowired
     private DUsuario dusuario;
+    
+    @Autowired
+    private UsuarioRepositorio usuarioRepo;
+
+    @Autowired
+    private UsuarioRolRepositorio rolUsuRepo;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> datos) {
+        String username = datos.get("username");
+        String password = datos.get("password");
+
+        try {
+        	Optional<EUsuario> usuarioOpt = usuarioRepo.findByUsername(username);
+
+            if (usuarioOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no encontrado o inactivo");
+            }
+
+            EUsuario usuario = usuarioOpt.get();
+
+            if (!usuario.getPasswordHash().equals(password)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
+            }
+
+            String rol = rolUsuRepo.findRolByUsuario(usuario.getIdUsuario());
+
+            String token = Jwts.builder()
+            	    .setSubject(username)
+            	    .claim("id", usuario.getIdUsuario())
+            	    .claim("rol", rol)
+            	    .setIssuedAt(new Date())
+            	    .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 día
+            	    .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()), SignatureAlgorithm.HS256)
+            	    .compact();
+
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("token", token);
+            respuesta.put("rol", rol);
+            respuesta.put("id_usuario", usuario.getIdUsuario());
+
+            return ResponseEntity.ok(respuesta);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al iniciar sesión");
+        }
+    }
 
     @PostMapping("/crear")
     public ResponseEntity<?> crearUsuario(@RequestBody EUsuario usuario) {

@@ -16,62 +16,84 @@ function DepartamentosPanel() {
   }, []);
 
   const cargarTodos = () => {
-    axios.get('http://localhost:8095/departamento/obtenerTodos')
-      .then(res => setDepartamentos(res.data))
-      .catch(err => console.error("Error de axios:", err));
+  const token = localStorage.getItem('token');
+  //console.log("Token:", token);
+
+  axios.get('http://localhost:8095/departamento/obtenerTodos', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => setDepartamentos(res.data))
+  .catch(err => console.error("Error de axios:", err));
   };
 
   const eliminarDepartamento = (id) => {
-    const confirmacion = window.confirm("¿Estás seguro de que deseas eliminar este departamento?");
-    if (!confirmacion) return;
+  const confirmacion = window.confirm("¿Estás seguro de que deseas eliminar este departamento?");
+  if (!confirmacion) return;
 
-    axios.patch(`http://localhost:8095/departamento/eliminar/${id}`)
-      .then(() => {
-        alert("Departamento eliminado correctamente.");
-        setDepartamentos(departamentos.filter(dep => dep.id_departamento !== id));
-      })
-      .catch(err => {
-        console.error("Error al eliminar:", err);
-        alert("Error al eliminar el departamento.");
-      });
+  axios.patch(`http://localhost:8095/departamento/eliminar/${id}`, null, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+  .then(() => {
+    alert("Departamento eliminado correctamente.");
+    setDepartamentos(departamentos.filter(dep => dep.id_departamento !== id));
+  })
+  .catch(err => {
+    console.error("Error al eliminar:", err);
+    alert("Error al eliminar el departamento.");
+  });
   };
 
   const crearDepartamento = () => {
-    axios.post('http://localhost:8095/departamento/crear', nuevoDep)
-      .then(() => {
-        alert("Departamento creado.");
-        setMostrarModal(false);
-        setNuevoDep({ nombre: '', descripcion: '', estado: 'Activo' });
-        cargarTodos();
-      })
-      .catch(err => {
-        console.error("Error al crear:", err);
-        alert("No se pudo crear el departamento.");
-      });
+    axios.post('http://localhost:8095/departamento/crear', nuevoDep, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(() => {
+      alert("Departamento creado.");
+      setMostrarModal(false);
+      setNuevoDep({ nombre: '', descripcion: '', estado: 'Activo' });
+      cargarTodos();
+    })
+    .catch(err => {
+      console.error("Error al crear:", err);
+      alert("No se pudo crear el departamento.");
+    });
   };
 
   const actualizarDepartamento = () => {
-    axios.put(`http://localhost:8095/departamento/actualizar/${editandoDep.id_departamento}`, editandoDep)
-      .then(() => {
-        alert("Departamento actualizado correctamente.");
-        setMostrarModal(false);
-        setEditandoDep(null);
-        cargarTodos();
-      })
-      .catch(err => {
-        console.error("Error al actualizar:", err);
-        alert("No se pudo actualizar el departamento.");
-      });
+    axios.put(`http://localhost:8095/departamento/actualizar/${editandoDep.id_departamento}`, editandoDep, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(() => {
+      alert("Departamento actualizado correctamente.");
+      setMostrarModal(false);
+      setEditandoDep(null);
+      cargarTodos();
+    })
+    .catch(err => {
+      console.error("Error al actualizar:", err);
+      alert("No se pudo actualizar el departamento.");
+    });
   };
-  
 
   const buscarDepartamentoPorId = () => {
-    axios.get(`http://localhost:8095/departamento/obtenerPorId/${idBuscar}`)
-      .then(res => setDepartamentos([res.data]))
-      .catch(err => {
-        console.error("Error al buscar:", err);
-        alert("Departamento no encontrado.");
-      });
+    axios.get(`http://localhost:8095/departamento/obtenerPorId/${idBuscar}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(res => setDepartamentos([res.data]))
+    .catch(err => {
+      console.error("Error al buscar:", err);
+      alert("Departamento no encontrado.");
+    });
   };
 
   const abrirModalEditar = (dep) => {

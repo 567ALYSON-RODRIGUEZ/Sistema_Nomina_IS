@@ -12,13 +12,23 @@ function RolesPanel() {
   }, []);
 
   const cargarTodos = () => {
-    axios.get('http://192.168.0.23:8095/rol/obtenerTodos')
+    const token = localStorage.getItem('token');
+
+    axios.get('http://192.168.0.23:8095/rol/obtenerTodos',{
+      headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
       .then(res => setRoles(res.data))
       .catch(err => console.error("Error al cargar roles:", err));
   };
 
   const crearRol = () => {
-    axios.post('http://192.168.0.23:8095/rol/crear', nuevoRol)
+    axios.post('http://192.168.0.23:8095/rol/crear', nuevoRol,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Rol creado correctamente.");
         setNuevoRol({ nombre_rol: '', descripcion: '' });
@@ -31,7 +41,11 @@ function RolesPanel() {
   };
 
   const buscarPorId = () => {
-    axios.get(`http://192.168.0.23:8095/rol/obtenerPorId/${idBuscar}`)
+    axios.get(`http://192.168.0.23:8095/rol/obtenerPorId/${idBuscar}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(res => setRoles([res.data]))
       .catch(err => {
         console.error("Error al buscar rol:", err);

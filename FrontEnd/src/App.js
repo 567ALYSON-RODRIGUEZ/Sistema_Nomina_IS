@@ -1,58 +1,130 @@
 import React, { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+import EmpleadoCrud from './components/EmpleadoCrud';
 import PeriodoNomina from './components/PeriodoNomina';
 import DetalleConceptos from './components/DetalleConceptos';
-import EmpleadoCrud from './components/EmpleadoCrud';
 import Departamentos from './components/Departamentos';
-import Roles from './components/Roles'
-import Puestos from './components/Puestos'
-import Sidebar from './components/Sidebar'; 
+import Roles from './components/Roles';
+import Puestos from './components/Puestos';
 import Nomina from './components/Nomina';
 import Empresa from './components/Empresa';
-import Usuarios from './components/Usuarios'
+import Usuarios from './components/Usuarios';
+import Sidebar from './components/Sidebar';
+import Login from './components/Login';
+import { useNavigate } from 'react-router-dom';
 
 import './App.css';
 
-
 function App() {
-  const [selected, setSelected] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState('');
+  const navigate = useNavigate();
 
-  const renderContent = () => {
-    switch (selected) {
-      case 'empleado':
-        return <EmpleadoCrud />;
-      case 'nomina':
-        return <Nomina />;
-      case 'periodo':
-        return <PeriodoNomina />;
-      case 'detalle':
-        return <DetalleConceptos />;
-        case 'rol':
-        return <Roles />;
-      case 'puesto':
-        return <Puestos />;
-      case 'departamento':
-        return <Departamentos />;
-      case 'empresa':
-        return <Empresa />
-      case 'usuario':
-        return <Usuarios />
-      
-      default:
-        return <h2>Bienvenido</h2>;
-    }
+  const ProtectedLayout = ({ children }) => {
+    if (!isAuthenticated) return <Navigate to="/login" replace />;
+    return (
+      <div className="app-container">
+        <Sidebar role={role} onSelect={(ruta) => navigate(`/${ruta}`)} />
+        <div className="main-content">{children}</div>
+      </div>
+    );
   };
 
   return (
-    <div className="app-container">
-      <Sidebar onSelect={setSelected} />
-      <div className="main-content">
-        {renderContent()}
-      </div>
-    </div>
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          isAuthenticated ? (
+            <Navigate to="/" replace />
+          ) : (
+            <Login setIsAuthenticated={setIsAuthenticated} setRole={setRole} />
+          )
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <ProtectedLayout>
+            <h2>Bienvenida</h2>
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/empleado"
+        element={
+          <ProtectedLayout>
+            <EmpleadoCrud />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/nomina"
+        element={
+          <ProtectedLayout>
+            <Nomina />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/periodo"
+        element={
+          <ProtectedLayout>
+            <PeriodoNomina />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/detalle"
+        element={
+          <ProtectedLayout>
+            <DetalleConceptos />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/rol"
+        element={
+          <ProtectedLayout>
+            <Roles />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/puesto"
+        element={
+          <ProtectedLayout>
+            <Puestos />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/departamento"
+        element={
+          <ProtectedLayout>
+            <Departamentos />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/empresa"
+        element={
+          <ProtectedLayout>
+            <Empresa />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/usuario"
+        element={
+          <ProtectedLayout>
+            <Usuarios />
+          </ProtectedLayout>
+        }
+      />
+    </Routes>
   );
 }
 
 export default App;
-
-
-

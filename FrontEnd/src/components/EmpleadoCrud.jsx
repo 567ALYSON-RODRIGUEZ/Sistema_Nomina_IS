@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './EmpleadoCrud.css'; // Asegúrate de crear el CSS
+import './EmpleadoCrud.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,13 +27,23 @@ function EmpleadoCrud() {
   }, []);
 
   const cargarEmpleados = () => {
-    axios.get('http://localhost:8095/empleado/obtenerTodos')
-      .then(res => setEmpleados(res.data))
-      .catch(err => console.error("Error al cargar empleados:", err));
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:8095/empleado/obtenerTodos',{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => setEmpleados(res.data))
+    .catch(err => console.error("Error al cargar empleados:", err));
   };
+  
 
   const crearEmpleado = () => {
-    axios.post('http://localhost:8095/empleado/crear', nuevoEmpleado)
+    axios.post('http://localhost:8095/empleado/crear', nuevoEmpleado, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(() => {
         alert("Empleado creado exitosamente.");
         setMostrarModal(false);
@@ -47,7 +57,11 @@ function EmpleadoCrud() {
   };
 
   const actualizarEmpleado = () => {
-    axios.put(`http://localhost:8095/empleado/reemplazar/${editandoEmpleado.idEmpleado}`, editandoEmpleado)
+    axios.put(`http://localhost:8095/empleado/reemplazar/${editandoEmpleado.idEmpleado}`, editandoEmpleado, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(() => {
         alert("Empleado actualizado correctamente.");
         setMostrarModal(false);
@@ -64,7 +78,11 @@ function EmpleadoCrud() {
     const confirmar = window.confirm("¿Estás seguro de eliminar este empleado?");
     if (!confirmar) return;
 
-    axios.delete(`http://localhost:8095/empleado/eliminar/${id}`)
+    axios.delete(`http://localhost:8095/empleado/eliminar/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(() => {
         alert("Empleado eliminado.");
         setEmpleados(empleados.filter(e => e.idEmpleado !== id));
@@ -76,7 +94,11 @@ function EmpleadoCrud() {
   };
 
   const buscarPorId = () => {
-    axios.get(`http://localhost:8095/empleado/obtenerPorId/${idBuscar}`)
+    axios.get(`http://localhost:8095/empleado/obtenerPorId/${idBuscar}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(res => setEmpleados([res.data]))
       .catch(err => {
         console.error("Empleado no encontrado:", err);

@@ -21,15 +21,28 @@ function UsuariosPanel() {
   }, []);
 
   const cargarTodos = () => {
-    axios.get('http://localhost:8095/usuario/obtenerTodos')
-      .then(res => setUsuarios(res.data))
+    const token = localStorage.getItem('token');
+
+    axios.get('http://localhost:8095/usuario/obtenerTodos',{
+      headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+      .then(res => {
+        console.log("Respuesta de usuarios:", res.data); 
+        setUsuarios(res.data);
+      })
       .catch(err => console.error("Error al cargar usuarios:", err));
   };
 
   const eliminarUsuario = (id) => {
     if (!window.confirm("¿Deseas eliminar este usuario?")) return;
 
-    axios.delete(`http://localhost:8095/usuario/eliminar/${id}`)
+    axios.delete(`http://localhost:8095/usuario/eliminar/${id}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Usuario eliminado correctamente.");
         setUsuarios(usuarios.filter(u => u.id_usuario !== id));
@@ -41,7 +54,11 @@ function UsuariosPanel() {
   };
 
   const crearUsuario = () => {
-    axios.post('http://localhost:8095/usuario/crear', nuevoUsuario)
+    axios.post('http://localhost:8095/usuario/crear', nuevoUsuario,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Usuario creado.");
         setMostrarModal(false);
@@ -57,7 +74,11 @@ function UsuariosPanel() {
   };
 
   const actualizarUsuario = () => {
-    axios.put(`http://localhost:8095/usuario/reemplazar/${editandoUsuario.id_usuario}`, editandoUsuario)
+    axios.put(`http://localhost:8095/usuario/reemplazar/${editandoUsuario.id_usuario}`, editandoUsuario,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(() => {
         alert("Usuario actualizado.");
         setMostrarModal(false);
@@ -71,7 +92,11 @@ function UsuariosPanel() {
   };
 
   const buscarUsuarioPorId = () => {
-    axios.get(`http://localhost:8095/usuario/obtenerPorId/${idBuscar}`)
+    axios.get(`http://localhost:8095/usuario/obtenerPorId/${idBuscar}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
       .then(res => setUsuarios([res.data]))
       .catch(err => {
         console.error("Error al buscar:", err);
@@ -158,9 +183,9 @@ function UsuariosPanel() {
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </td>
-              <td>{u.id_usuario}</td>
+              <td>{u.idUsuario}</td>
               <td>{u.username}</td>
-              <td>{u.nombre_completo}</td>
+              <td>{u.nombreCompleto}</td>
               <td>{u.estado}</td>
             </tr>
           ))}
