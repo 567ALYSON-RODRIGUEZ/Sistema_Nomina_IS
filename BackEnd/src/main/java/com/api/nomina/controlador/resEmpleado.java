@@ -1,5 +1,6 @@
 package com.api.nomina.controlador;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,9 +52,12 @@ public class resEmpleado {
             }
 
             String estado = empleado.getEstado();
-            if (estado != null && !estado.equalsIgnoreCase("Activo") && !estado.equalsIgnoreCase("Inactivo")) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Estado inválido."));
+            if (estado != null && !Arrays.asList("Activo", "Inactivo", "Suspendido", "Despedido", "Renunciado")
+                                 .contains(estado.trim())) {
+                return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "Estado inválido."));
             }
+
 
             dempleado.actualizarEmpleado(
                 id,

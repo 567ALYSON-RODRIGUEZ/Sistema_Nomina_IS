@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUsers, faBriefcase, faBuilding, faUserShield, faMoneyCheckAlt,
-  faCalendarAlt, faBars, faChevronLeft, faChevronDown, faChevronUp, faLandmark
+  faCalendarAlt, faBars, faChevronLeft, faChevronDown, faChevronUp,
+  faLandmark, faClock, faUser, faUniversity, faGift, faFileInvoiceDollar,
+  faLayerGroup, faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar({ onSelect }) {
   const [open, setOpen] = useState(true);
   const [mantenimientosOpen, setMantenimientosOpen] = useState(false);
   const [nominaOpen, setNominaOpen] = useState(false);
+  const [role, setRole] = useState('');
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('role');
+    console.log('Rol desde localStorage:', storedRole);
+    setRole(storedRole);
+  }, []);
 
   const handleClick = (option) => {
     onSelect(option);
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
   };
 
   return (
@@ -24,29 +38,58 @@ function Sidebar({ onSelect }) {
 
       {open && (
         <ul className="menu">
-          <li onClick={() => setMantenimientosOpen(!mantenimientosOpen)}>
-            <FontAwesomeIcon icon={faUsers} /> Mantenimientos {mantenimientosOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+          
+          <li className="info-message">
+          Has iniciado sesión como: <strong>{role}</strong>
           </li>
-          {mantenimientosOpen && (
-            <ul className="submenu">
-              <li onClick={() => handleClick('empleado')}><FontAwesomeIcon icon={faUsers} /> Empleados</li>
-              <li onClick={() => handleClick('usuario')}><FontAwesomeIcon icon={faUserShield} /> Usuarios</li>
-              <li onClick={() => handleClick('empresa')}><FontAwesomeIcon icon={faLandmark}/> Empresa</li>
-              <li onClick={() => handleClick('puesto')}><FontAwesomeIcon icon={faBriefcase} /> Puestos</li>
-              <li onClick={() => handleClick('departamento')}><FontAwesomeIcon icon={faBuilding} /> Departamentos</li>
-              <li onClick={() => handleClick('rol')}><FontAwesomeIcon icon={faUserShield} /> Roles</li>
-            </ul>
+
+          {(role === 'Admin' || role === 'RRHH') && (
+            <>
+              <li onClick={() => setMantenimientosOpen(!mantenimientosOpen)}>
+                <FontAwesomeIcon icon={faLayerGroup} /> Mantenimientos {mantenimientosOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+              </li>
+              {mantenimientosOpen && (
+                <ul className="submenu">
+                  <li onClick={() => handleClick('empleado')}><FontAwesomeIcon icon={faUsers} /> Empleados</li>
+                  {role === 'Admin' && (
+                    <>
+                      <li onClick={() => handleClick('usuario')}><FontAwesomeIcon icon={faUser} /> Usuarios</li>
+                      <li onClick={() => handleClick('empresa')}><FontAwesomeIcon icon={faUniversity}/> Empresa</li>
+                      <li onClick={() => handleClick('puesto')}><FontAwesomeIcon icon={faBriefcase} /> Puestos</li>
+                      <li onClick={() => handleClick('departamento')}><FontAwesomeIcon icon={faBuilding} /> Departamentos</li>
+                      <li onClick={() => handleClick('rol')}><FontAwesomeIcon icon={faUserShield} /> Roles</li>
+                      <li onClick={() => handleClick('anticipo')}><FontAwesomeIcon icon={faFileInvoiceDollar} /> Anticipos</li>
+                      <li onClick={() => handleClick('Igss')}><FontAwesomeIcon icon={faLandmark} /> IGSS P</li>
+                      <li onClick={() => handleClick('bonificacion')}><FontAwesomeIcon icon={faGift} /> Bonificaciones</li>
+                      <li onClick={() => handleClick('asistencia')}><FontAwesomeIcon icon={faClock} /> Asistencias</li>
+                      <li onClick={() => handleClick('nominas')}><FontAwesomeIcon icon={faMoneyCheckAlt} /> Nóminas</li>
+                    </>
+                  )}
+                </ul>
+              )}
+            </>
           )}
 
-          <li onClick={() => setNominaOpen(!nominaOpen)}>
-            <FontAwesomeIcon icon={faMoneyCheckAlt} /> Nómina {nominaOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
-          </li>
-          {nominaOpen && (
-            <ul className="submenu">
-              <li onClick={() => handleClick('periodo')}><FontAwesomeIcon icon={faCalendarAlt} /> Periodos de Nómina</li>
-              <li onClick={() => handleClick('nomina')}><FontAwesomeIcon icon={faMoneyCheckAlt} /> Generar Nómina</li>
-            </ul>
+          {(role === 'Admin' || role === 'RRHH') && (
+            <>
+              <li onClick={() => setNominaOpen(!nominaOpen)}>
+                <FontAwesomeIcon icon={faMoneyCheckAlt} /> Nómina {nominaOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+              </li>
+              {nominaOpen && (
+                <ul className="submenu">
+                  <li onClick={() => handleClick('periodo')}><FontAwesomeIcon icon={faCalendarAlt} /> Periodos de Nómina</li>
+                  <li onClick={() => handleClick('nomina')}><FontAwesomeIcon icon={faMoneyCheckAlt} /> Generar Nómina</li>
+                  <li onClick={() => handleClick('detallenominaM')}><FontAwesomeIcon icon={faFileInvoiceDollar} /> Nómina Mensual</li>
+                  <li onClick={() => handleClick('detallenominaQ')}><FontAwesomeIcon icon={faFileInvoiceDollar} /> Nómina Quincenal</li>
+                  <li onClick={() => handleClick('detallenominaS')}><FontAwesomeIcon icon={faFileInvoiceDollar} /> Nómina Semanal</li>
+                </ul>
+              )}
+            </>
           )}
+
+          <li onClick={handleLogout}>
+            <FontAwesomeIcon icon={faSignOutAlt} /> Cerrar sesión
+          </li>
         </ul>
       )}
     </div>

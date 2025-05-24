@@ -8,8 +8,8 @@ function UsuariosPanel() {
   const [usuarios, setUsuarios] = useState([]);
   const [nuevoUsuario, setNuevoUsuario] = useState({
     username: '',
-    password_hash: '',
-    nombre_completo: '',
+    passwordHash: '',
+    nombreCompleto: '',
     estado: 'Activo'
   });
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -21,31 +21,39 @@ function UsuariosPanel() {
   }, []);
 
   const cargarTodos = () => {
-    const token = localStorage.getItem('token');
+  axios.get('http://localhost:8095/usuario/obtenerTodos')
+    .then(res => {
+      // Excluye usuarios con estado "Eliminado"
+      const usuariosValidos = res.data.filter(u => u.estado !== 'Eliminado');
+      setUsuarios(usuariosValidos);
+    })
+    .catch(err => console.error("Error al cargar usuarios:", err));
+};
 
-    axios.get('http://localhost:8095/usuario/obtenerTodos',{
-      headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-      .then(res => {
-        console.log("Respuesta de usuarios:", res.data); 
-        setUsuarios(res.data);
-      })
-      .catch(err => console.error("Error al cargar usuarios:", err));
-  };
+const buscarUsuarioPorId = () => {
+  axios.get(`http://localhost:8095/usuario/obtenerPorId/${idBuscar}`)
+    .then(res => {
+      if (res.data.estado !== 'Eliminado') {
+        setUsuarios([res.data]);
+      } else {
+        alert("Usuario no encontrado o está eliminado.");
+        setUsuarios([]);
+      }
+    })
+    .catch(err => {
+      console.error("Error al buscar:", err);
+      alert("Usuario no encontrado.");
+      setUsuarios([]);
+    });
+};
 
   const eliminarUsuario = (id) => {
     if (!window.confirm("¿Deseas eliminar este usuario?")) return;
 
-    axios.delete(`http://localhost:8095/usuario/eliminar/${id}`,{
-      headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  })
+    axios.delete(`http://localhost:8095/usuario/eliminar/${id}`)
       .then(() => {
         alert("Usuario eliminado correctamente.");
-        setUsuarios(usuarios.filter(u => u.id_usuario !== id));
+        setUsuarios(usuarios.filter(u => u.idUsuario !== id));
       })
       .catch(err => {
         console.error("Error al eliminar:", err);
@@ -54,16 +62,12 @@ function UsuariosPanel() {
   };
 
   const crearUsuario = () => {
-    axios.post('http://localhost:8095/usuario/crear', nuevoUsuario,{
-      headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  })
+    axios.post('http://localhost:8095/usuario/crear', nuevoUsuario)
       .then(() => {
         alert("Usuario creado.");
         setMostrarModal(false);
         setNuevoUsuario({
-          username: '', password_hash: '', nombre_completo: '', estado: 'Activo'
+          username: '', passwordHash: '', nombreCompleto: '', estado: 'Activo'
         });
         cargarTodos();
       })
@@ -74,11 +78,7 @@ function UsuariosPanel() {
   };
 
   const actualizarUsuario = () => {
-    axios.put(`http://localhost:8095/usuario/reemplazar/${editandoUsuario.id_usuario}`, editandoUsuario,{
-      headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  })
+    axios.put(`http://localhost:8095/usuario/reemplazar/${editandoUsuario.idUsuario}`, editandoUsuario)
       .then(() => {
         alert("Usuario actualizado.");
         setMostrarModal(false);
@@ -91,18 +91,6 @@ function UsuariosPanel() {
       });
   };
 
-  const buscarUsuarioPorId = () => {
-    axios.get(`http://localhost:8095/usuario/obtenerPorId/${idBuscar}`,{
-      headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-      .then(res => setUsuarios([res.data]))
-      .catch(err => {
-        console.error("Error al buscar:", err);
-        alert("Usuario no encontrado.");
-      });
-  };
 
   const abrirModalEditar = (u) => {
     setEditandoUsuario(u);
@@ -130,11 +118,11 @@ function UsuariosPanel() {
         <div className="modal">
           <div className="modal-contenido">
             <h3>{editandoUsuario ? 'Editar Usuario' : 'Crear Usuario'}</h3>
-            {['username', 'password_hash', 'nombre_completo'].map(campo => (
+            {['username', 'passwordHash', 'nombreCompleto'].map(campo => (
               <input
                 key={campo}
-                type={campo === 'password_hash' ? 'password' : 'text'}
-                placeholder={campo.replace('_', ' ')}
+                type={campo === 'passwordHash' ? 'password' : 'text'}
+                placeholder={campo.replace(/([A-Z])/g, ' $1')}
                 value={editandoUsuario ? editandoUsuario[campo] : nuevoUsuario[campo]}
                 onChange={e =>
                   editandoUsuario
@@ -174,12 +162,12 @@ function UsuariosPanel() {
         </thead>
         <tbody>
           {usuarios.map(u => (
-            <tr key={u.id_usuario}>
+            <tr key={u.idUsuario}>
               <td>
                 <button className="btn-editar" onClick={() => abrirModalEditar(u)}>
                   <FontAwesomeIcon icon={faPen} />
                 </button>
-                <button className="btn-eliminar" onClick={() => eliminarUsuario(u.id_usuario)}>
+                <button className="btn-eliminar" onClick={() => eliminarUsuario(u.idUsuario)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </td>

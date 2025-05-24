@@ -1,0 +1,159 @@
+.contenedor-panel {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+
+.barra-superior-nominas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #252f35;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px 10px 0 0;
+}
+
+.btn-nueva-nomina {
+  background-color: #5fbe62;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-nueva-nomina:hover {
+  background-color: #4caf50;
+}
+
+
+.tabla-nominas {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabla-nominas thead tr {
+  background-color: #46576b;
+  color: white;
+}
+
+.tabla-nominas th,
+.tabla-nominas td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+
+.btn-editar,
+.btn-eliminar {
+  color: black;
+  background: transparent;
+  font-size: 12px;
+  padding: 6px 10px;
+  border: 1px solid #46576b;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-editar:hover {
+  background-color: #a5b1c2;
+}
+
+.btn-eliminar:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-contenido {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  font-size: 14px;
+}
+
+.modal-contenido h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+
+.modal-contenido input,
+.modal-contenido select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+
+.modal-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+
+.modal-botones button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-botones button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-botones button:first-child:hover {
+  background-color: #45a049;
+}
+
+.modal-botones button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-botones button:last-child:hover {
+  background-color: #d32f2f;
+}

@@ -1,0 +1,148 @@
+.parametros-panel {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.parametros-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3a4651;
+  font-family: 'Courier New', Courier, monospace;
+  flex-wrap: wrap;
+  padding: 10px;
+  color: white;
+}
+
+.parametros-acciones {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.parametros-btn-nuevo,
+.parametros-btn-buscar {
+  background-color: #4e9a51;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.parametros-btn-buscar {
+  background-color: #6d7e8b;
+}
+
+.parametros-btn-nuevo:hover,
+.parametros-btn-buscar:hover {
+  background-color: #3d7b3b;
+}
+
+.parametros-acciones input[type="text"] {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.parametros-tabla {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.parametros-tabla thead tr {
+  background-color: #3d4d5c;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.parametros-tabla th,
+.parametros-tabla td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.parametros-btn-editar,
+.parametros-btn-eliminar {
+  color: black;
+  background: transparent;
+  font-size: 12px;
+  padding: 8px 12px;
+  border: 1px solid #3d4d5c;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.parametros-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.parametros-modal-contenido {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.parametros-modal-contenido input,
+.parametros-modal-contenido select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.parametros-modal-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.parametros-modal-botones button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.3s ease;
+}
+
+.parametros-modal-botones button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.parametros-modal-botones button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.parametros-modal-botones button:hover {
+  opacity: 0.8;
+}

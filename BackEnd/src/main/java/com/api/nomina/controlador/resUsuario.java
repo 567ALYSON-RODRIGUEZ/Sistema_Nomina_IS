@@ -1,5 +1,6 @@
 package com.api.nomina.controlador;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -107,9 +108,11 @@ public class resUsuario {
             }
 
             String estado = usuario.getEstado();
-            if (estado != null && !estado.equalsIgnoreCase("Activo") && !estado.equalsIgnoreCase("Inactivo")) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Estado inválido."));
-            }
+            if (estado != null && !Arrays.asList("Activo", "Inactivo", "Eliminado")
+                    .contains(estado.trim())) {
+   return ResponseEntity.badRequest()
+       .body(Collections.singletonMap("error", "Estado inválido."));
+}
 
             dusuario.actualizarUsuario(
                 id,

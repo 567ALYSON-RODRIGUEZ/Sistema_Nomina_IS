@@ -1,0 +1,66 @@
+.quincenal-panel {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quincenal-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #252f35;
+  font-family: 'Courier New', Courier, monospace;
+  flex-wrap: wrap;
+  padding: 10px;
+  color: white;
+}
+
+.quincenal-acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.quincenal-btn {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.quincenal-btn.verde {
+  background-color: #5fbe62;
+  color: white;
+}
+
+.quincenal-btn.gris {
+  background-color: #7a8b95;
+  color: white;
+}
+
+.quincenal-barra input[type="text"] {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.quincenal-tabla {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.quincenal-tabla thead tr {
+  background-color: #46576b;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.quincenal-tabla th,
+.quincenal-tabla td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}

@@ -7,10 +7,17 @@ import DetalleConceptos from './components/DetalleConceptos';
 import Departamentos from './components/Departamentos';
 import Roles from './components/Roles';
 import Puestos from './components/Puestos';
-import Nomina from './components/Nomina';
 import Empresa from './components/Empresa';
 import Usuarios from './components/Usuarios';
 import Sidebar from './components/Sidebar';
+import Anticipos from './components/Anticipos';
+import Asistencias from './components/Asistencias';
+import NominasE from './components/NominasE';
+import Bonificacion from './components/Bonificacion'
+import ParametroIgss from './components/ParametroIgss';
+import Mensual from './components/Mensual'
+import Quincenal from './components/Quincenal';
+import Semanal from './components/Semanal';
 import Login from './components/Login';
 import { useNavigate } from 'react-router-dom';
 
@@ -59,14 +66,7 @@ function App() {
           </ProtectedLayout>
         }
       />
-      <Route
-        path="/nomina"
-        element={
-          <ProtectedLayout>
-            <Nomina />
-          </ProtectedLayout>
-        }
-      />
+
       <Route
         path="/periodo"
         element={
@@ -120,6 +120,79 @@ function App() {
         element={
           <ProtectedLayout>
             <Usuarios />
+          </ProtectedLayout>
+        }
+      />
+
+
+    <Route
+        path="/anticipo"
+        element={
+          <ProtectedLayout>
+            <Anticipos />
+          </ProtectedLayout>
+        }
+      />
+
+          <Route
+        path="/bonificacion"
+        element={
+          <ProtectedLayout>
+            <Bonificacion />
+          </ProtectedLayout>
+        }
+      />
+
+                <Route
+        path="/asistencia"
+        element={
+          <ProtectedLayout>
+            <Asistencias />
+          </ProtectedLayout>
+        }
+      />
+
+                <Route
+        path="/nominas"
+        element={
+          <ProtectedLayout>
+            <NominasE />
+          </ProtectedLayout>
+        }
+      />
+
+                <Route
+        path="/igss"
+        element={
+          <ProtectedLayout>
+            <ParametroIgss />
+          </ProtectedLayout>
+        }
+      />
+
+      <Route
+        path="/detallenominaM"
+        element={
+          <ProtectedLayout>
+            <Mensual />
+          </ProtectedLayout>
+        }
+      />
+
+      <Route
+        path="/detallenominaQ"
+        element={
+          <ProtectedLayout>
+            <Quincenal />
+          </ProtectedLayout>
+        }
+      />
+
+      <Route
+        path="/detallenominaS"
+        element={
+          <ProtectedLayout>
+            <Semanal />
           </ProtectedLayout>
         }
       />
