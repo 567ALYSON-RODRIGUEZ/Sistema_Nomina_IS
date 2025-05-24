@@ -7,11 +7,15 @@ import DetalleConceptos from './components/DetalleConceptos';
 import Departamentos from './components/Departamentos';
 import Roles from './components/Roles';
 import Puestos from './components/Puestos';
-import Nomina from './components/Nomina';
 import Empresa from './components/Empresa';
 import Usuarios from './components/Usuarios';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
+import Permisos from './components/Permisos';
+import Isr from './components/Isr';
+import PlanillaAguinaldo from './components/PlanillaAguinaldo';
+import PlanillaBono14 from './components/PlanillaBono14';
+import Finiquito from './components/Finiquito';
 import { useNavigate } from 'react-router-dom';
 
 import './App.css';
@@ -56,14 +60,6 @@ function App() {
         element={
           <ProtectedLayout>
             <EmpleadoCrud />
-          </ProtectedLayout>
-        }
-      />
-      <Route
-        path="/nomina"
-        element={
-          <ProtectedLayout>
-            <Nomina />
           </ProtectedLayout>
         }
       />
@@ -120,6 +116,46 @@ function App() {
         element={
           <ProtectedLayout>
             <Usuarios />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/permisos"
+        element={
+          <ProtectedLayout>
+            <Permisos />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/isr"
+        element={
+          <ProtectedLayout>
+            <Isr />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/planilla"
+        element={
+          <ProtectedLayout>
+            <PlanillaAguinaldo />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/planilla14"
+        element={
+          <ProtectedLayout>
+            <PlanillaBono14 />
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/finiquito"
+        element={
+          <ProtectedLayout>
+            <Finiquito />
           </ProtectedLayout>
         }
       />

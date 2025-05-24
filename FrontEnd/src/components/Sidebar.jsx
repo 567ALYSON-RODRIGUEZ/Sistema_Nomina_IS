@@ -35,6 +35,8 @@ function Sidebar({ onSelect }) {
               <li onClick={() => handleClick('puesto')}><FontAwesomeIcon icon={faBriefcase} /> Puestos</li>
               <li onClick={() => handleClick('departamento')}><FontAwesomeIcon icon={faBuilding} /> Departamentos</li>
               <li onClick={() => handleClick('rol')}><FontAwesomeIcon icon={faUserShield} /> Roles</li>
+              <li onClick={() => handleClick('permisos')}><FontAwesomeIcon icon={faUserShield} /> Permisos</li>
+              <li onClick={() => handleClick('isr')}><FontAwesomeIcon icon={faUserShield} /> Calculo ISR</li>
             </ul>
           )}
 
@@ -45,6 +47,9 @@ function Sidebar({ onSelect }) {
             <ul className="submenu">
               <li onClick={() => handleClick('periodo')}><FontAwesomeIcon icon={faCalendarAlt} /> Periodos de Nómina</li>
               <li onClick={() => handleClick('nomina')}><FontAwesomeIcon icon={faMoneyCheckAlt} /> Generar Nómina</li>
+              <li onClick={() => handleClick('planilla')}><FontAwesomeIcon icon={faUserShield} /> Planilla Aguinaldo</li>
+              <li onClick={() => handleClick('planilla14')}><FontAwesomeIcon icon={faUserShield} /> Planilla Bono 14</li>
+              <li onClick={() => handleClick('finiquito')}><FontAwesomeIcon icon={faUserShield} /> Finiquito</li>
             </ul>
           )}
         </ul>

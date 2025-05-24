@@ -16,5 +16,6 @@ public class conexion {
 	        System.setProperty("DB_PASS", dotenv.get("DB_PASS"));
 	        System.setProperty("DB_POOL_MAX", dotenv.get("DB_POOL_MAX"));
 	        System.setProperty("DB_POOL_MIN", dotenv.get("DB_POOL_MIN"));
+	   
 	    }
 }

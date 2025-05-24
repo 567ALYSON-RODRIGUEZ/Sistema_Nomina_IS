@@ -1,0 +1,58 @@
+.aguinaldo-container {
+  padding: 20px;
+  background: #ecf0f1;
+  border-radius: 10px;
+  width: 90%;
+  margin: auto;
+}
+
+.aguinaldo-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.aguinaldo-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.aguinaldo-tabla th, .aguinaldo-tabla td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #bdc3c7;
+}
+
+.aguinaldo-tabla th {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.btn-pago {
+  background-color: #27ae60;
+  color: white;
+  padding: 6px 12px;
+  border: 20 px;
+  border-radius: 5px;
+  border-bottom: -100px;
+}
+
+.tabla-planilla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-planilla th,
+.tabla-planilla td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.tabla-planilla th {
+  background-color: #f0f0f0;
+}
+
+
+
