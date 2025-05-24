@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuario")
-public class resUsuario {
+public class restUsuario {
 
     @Autowired
     private DUsuario dusuario;

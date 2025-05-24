@@ -1,0 +1,57 @@
+.contenedor-panel {
+  padding: 20px;
+}
+
+.barra-superiorr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.acciones-barra input {
+  padding: 8px;
+  margin-right: 10px;
+  width: 180px;
+}
+
+.btn-buscar {
+  padding: 8px 12px;
+  margin-right: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-buscar:hover {
+  background-color: #0056b3;
+}
+
+.tabla-puestos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.tabla-puestos th,
+.tabla-puestos td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.tabla-puestos th {
+  background-color: #43596e;
+}
+
+.resumen-finiquito {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #ccc;
+}
+
+.resumen-finiquito h3 {
+  margin-bottom: 15px;
+}

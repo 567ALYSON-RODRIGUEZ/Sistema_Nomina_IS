@@ -14,7 +14,7 @@ function RolesPanel() {
   const cargarTodos = () => {
     const token = localStorage.getItem('token');
 
-    axios.get('http://192.168.0.23:8095/rol/obtenerTodos',{
+    axios.get('http://localhost:8095/rol/obtenerTodos',{
       headers: {
       Authorization: `Bearer ${token}`
     }
@@ -24,7 +24,7 @@ function RolesPanel() {
   };
 
   const crearRol = () => {
-    axios.post('http://192.168.0.23:8095/rol/crear', nuevoRol,{
+    axios.post('http://localhost:8095/rol/crear', nuevoRol,{
       headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }
@@ -41,7 +41,7 @@ function RolesPanel() {
   };
 
   const buscarPorId = () => {
-    axios.get(`http://192.168.0.23:8095/rol/obtenerPorId/${idBuscar}`,{
+    axios.get(`http://localhost:8095/rol/obtenerPorId/${idBuscar}`,{
       headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     }

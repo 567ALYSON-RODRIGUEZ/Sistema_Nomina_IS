@@ -1,0 +1,150 @@
+/* Estilos generales del panel */
+.contenedor-panel {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Barra superior del panel */
+.barra-superiorr {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #252f35;
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+}
+
+.acciones-barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+input[type="text"] {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  min-width: 180px;
+}
+
+.btn-nuevo {
+  background-color: #5fbe62;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-buscar {
+  background-color: #7a8b95;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Tabla de datos */
+.tabla-isr {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.tabla-isr thead tr {
+  background-color: #46576b;
+  color: white;
+}
+
+.tabla-isr th,
+.tabla-isr td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.btn-editar,
+.btn-eliminar {
+  background: transparent;
+  border: 1px solid #46576b;
+  font-size: 12px;
+  padding: 6px 10px;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-contenido {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal-contenido h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.modal-contenido input,
+.modal-contenido select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.modal-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.modal-botones button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modal-botones button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.modal-botones button:last-child {
+  background-color: #f44336;
+  color: white;
+}
