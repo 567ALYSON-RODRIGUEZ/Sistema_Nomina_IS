@@ -32,7 +32,6 @@ import lombok.*;
 public class EFiniquito {
 		@Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  
 	    private int id_finiquito;
 
 	    @Column(name = "id_empleado")

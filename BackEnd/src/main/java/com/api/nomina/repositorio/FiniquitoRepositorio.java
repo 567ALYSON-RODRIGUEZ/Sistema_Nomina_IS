@@ -14,14 +14,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FiniquitoRepositorio extends JpaRepository<EFiniquito, Integer> {
 
-    @Procedure(name = "Finiquito.generarFiniquito")
-    void generarFiniquito(
-        @Param("id_empleado") Integer id_empleado
-    );
+	@Procedure(name = "Finiquito.generarFiniquito")
+	String generarFiniquito(@Param("id_empleado") int idEmpleado);
 
-    @Procedure(name = "Finiquito.generarFiniquito")
-    List<EFiniquito> findAllByIdFiniquito(int idFiniquito);
-
-    @Procedure(name = "Finiquito.generarFiniquito")
-	List<EFiniquito> findAllById(int id_empleado);
+    @Query("SELECT f FROM EFiniquito f WHERE f.idEmpleado = :idEmpleado")
+    List<EFiniquito> findByIdEmpleado(@Param("idEmpleado") int idEmpleado);
 }

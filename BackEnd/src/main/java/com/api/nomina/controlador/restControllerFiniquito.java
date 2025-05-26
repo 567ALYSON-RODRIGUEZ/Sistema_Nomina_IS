@@ -21,23 +21,14 @@ public class restControllerFiniquito {
     private FiniquitoRepositorio repo;
 
     @PostMapping("/generar/{idEmpleado}")
-    public String generarFiniquito(@PathVariable int idEmpleado) {
+    public ResponseEntity<String> generarFiniquito(@PathVariable int idEmpleado) {
         try {
-            dempleado.generarFiniquito(idEmpleado);
-            return "Finiquito generado correctamente.";
+            String resultado = dempleado.generarFiniquito(idEmpleado);
+            return ResponseEntity.ok(resultado != null ? resultado : "Finiquito generado");
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error al generar finiquito.";
+            return ResponseEntity.internalServerError().body("Error al generar el finiquito");
         }
     }
     
-    @GetMapping("/resumen/{idEmpleado}")
-    public List<EFiniquito> obtenerResumenFiniquito(@PathVariable int id_empleado) {
-        try {
-            return dempleado.listarPorAnio(id_empleado);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return List.of();
-        }
-    }
 }

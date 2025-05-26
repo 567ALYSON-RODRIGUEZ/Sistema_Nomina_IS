@@ -17,19 +17,8 @@ public class DFiniquito {
     private FiniquitoRepositorio repo;
 
     @Transactional
-    public void generarFiniquito(int idEmpleado) {
-        repo.generarFiniquito(idEmpleado);
-    }
-    
-    @Transactional
-    // Ejecutar el SP para generar o pagar la planilla
-    public void generarPlanillaAguinaldo(Integer id_empleado) {
-        repo.generarFiniquito(id_empleado);
+    public String generarFiniquito(int idEmpleado) {
+        return repo.generarFiniquito(idEmpleado);
     }
 
-    // Consultar todas las planillas generadas por año
-    @Transactional(readOnly = true)
-    public List<EFiniquito> listarPorAnio(int id_empleado) {
-        return repo.findAllById(id_empleado);
-    }
 }
