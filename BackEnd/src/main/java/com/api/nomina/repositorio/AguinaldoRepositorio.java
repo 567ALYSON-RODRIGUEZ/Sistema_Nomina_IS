@@ -1,7 +1,6 @@
 package com.api.nomina.repositorio;
 
 import com.api.nomina.modelo.EPlanillaAguinaldo;
-import com.api.nomina.modelo.PlanillaAguinaldo;
 
 import java.util.List;
 

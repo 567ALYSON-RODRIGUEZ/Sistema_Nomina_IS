@@ -40,6 +40,7 @@ public class Middleware {
 			.requestMatchers("/detallenominaQ/**").permitAll()
 			.requestMatchers("/detallenominaS/**").permitAll()
 			.requestMatchers("/usuario/login").permitAll()
+			.requestMatchers("/periodo/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.oauth2ResourceServer(oauth2 -> oauth2

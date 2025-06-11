@@ -68,5 +68,18 @@ public class resGenerarNominaS {
                 .body("Error al obtener el resumen de la nómina.");
         }
     }
+    
+    @GetMapping("/resumen")
+    public ResponseEntity<?> obtenerTodosLosResumenes() {
+        try {
+         
+        	List<DDetalleNominadto> resumen = ddetalleNomina.obtenerTodosLosResumenes();
+            return ResponseEntity.ok(resumen);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener todos los resúmenes de nómina.");
+        }
+    }
 
 }

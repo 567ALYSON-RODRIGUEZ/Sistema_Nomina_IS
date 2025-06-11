@@ -148,3 +148,26 @@
   color: white;
 }
 
+.asistencia-tabla-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.asistencia-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+
+.asistencia-tabla thead th {
+  position: sticky;
+  top: 0;
+  background-color: #3a4651;
+  z-index: 1;
+}
+
+

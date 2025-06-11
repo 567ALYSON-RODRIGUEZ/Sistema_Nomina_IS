@@ -7,36 +7,38 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.sql.Date;
 
-@NamedStoredProcedureQuery(
-    name = "Nomina.spNomina",
-    procedureName = "SP_Nominas",
-    parameters = {
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "accion", type = String.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_nomina", type = Integer.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "tipo", type = String.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_inicio", type = Date.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_fin", type = Date.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "fecha_generacion", type = Date.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "estado", type = String.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_periodo", type = Integer.class)
-    }
-)
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(
+        name = "Nomina.spNomina",
+        procedureName = "SP_Nominas",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "accion", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_nomina", type = Integer.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "tipo", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_inicio", type = Date.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_fin", type = Date.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "fecha_generacion", type = Date.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "estado", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_periodo", type = Integer.class)
+        }
+    ),
+    @NamedStoredProcedureQuery(
+        name = "Nomina.spNominaListar",
+        procedureName = "SP_Nominas",
+        resultClasses = ENomina.class,
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "accion", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_nomina", type = Integer.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "tipo", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_inicio", type = Date.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_fin", type = Date.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "fecha_generacion", type = Date.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "estado", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_periodo", type = Integer.class)
+        }
+    )
+})
 
-@NamedStoredProcedureQuery(
-    name = "Nomina.spNominaListar",
-    procedureName = "SP_Nominas",
-    resultClasses = ENomina.class,
-    parameters = {
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "accion", type = String.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_nomina", type = Integer.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "tipo", type = String.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_inicio", type = Date.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_fin", type = Date.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "fecha_generacion", type = Date.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "estado", type = String.class),
-        @StoredProcedureParameter(mode = ParameterMode.IN, name = "id_periodo", type = Integer.class)
-    }
-)
 
 @Getter
 @Setter
@@ -49,7 +51,7 @@ public class ENomina {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_nomina")
-    private int idNomina;
+    private Integer idNomina;
 
     @Column(name = "tipo")
     private String tipo;
@@ -67,5 +69,5 @@ public class ENomina {
     private String estado;
 
     @Column(name = "id_periodo")
-    private int idPeriodo;
+    private Integer idPeriodo;
 }

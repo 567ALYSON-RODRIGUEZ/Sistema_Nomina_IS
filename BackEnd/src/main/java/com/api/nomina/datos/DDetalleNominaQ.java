@@ -49,4 +49,18 @@ public class DDetalleNominaQ {
             ((Number) r[5]).doubleValue()
         )).toList();
     }
+    
+    @Transactional(readOnly = true)
+    public List<DDetalleNominadto> obtenerTodosLosResumenes() {
+        List<Object[]> resultados = detalleNominaRepositorio.obtenerTodosLosResumenes();
+
+        return resultados.stream().map(r -> new DDetalleNominadto(
+            (Integer) r[0],
+            (String) r[1],
+            (String) r[2],
+            ((Number) r[3]).doubleValue(),
+            ((Number) r[4]).doubleValue(),
+            ((Number) r[5]).doubleValue()
+        )).toList();
+    }
 }

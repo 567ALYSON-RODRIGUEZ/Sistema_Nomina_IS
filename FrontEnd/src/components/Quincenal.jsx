@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './Quincenal.css';
 import jsPDF from "jspdf";
@@ -10,13 +10,25 @@ const Quincenal = () => {
   const [detalle, setDetalle] = useState([]);
   const [resumen, setResumen] = useState([]);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
+  const [habilitarDetalle, setHabilitarDetalle] = useState(false);
+
+  useEffect(() => {
+    obtenerResumenSinPeriodo();
+  }, []);
+
+  useEffect(() => {
+    if (mensaje) {
+      const timer = setTimeout(() => setMensaje(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [mensaje]);
 
   const generarNomina = async () => {
     try {
       const response = await axios.post(`http://localhost:8095/detallenominaQ/generar/${idPeriodo}`);
       setMensaje(response.data);
     } catch (error) {
-      setMensaje(error.response?.data || "Error al generar la nómina.");
+      setMensaje(error.response?.data || "Error al generar la nómina quincenal.");
     }
   };
 
@@ -29,13 +41,27 @@ const Quincenal = () => {
     }
   };
 
-  const obtenerResumen = async () => {
+  const obtenerResumenConPeriodo = async () => {
     try {
       const response = await axios.get(`http://localhost:8095/detallenominaQ/resumen/${idPeriodo}`);
       setResumen(response.data);
-      setMensaje("Resumen cargado.");
+      setMensaje("Resumen quincenal cargado.");
+      setHabilitarDetalle(true);
     } catch {
       setMensaje("Error al obtener resumen.");
+      setHabilitarDetalle(false);
+    }
+  };
+
+  const obtenerResumenSinPeriodo = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8095/detallenominaQ/resumen`);
+      setResumen(response.data);
+      setMensaje("Resumen quincenal cargado.");
+      setHabilitarDetalle(false);
+    } catch {
+      setMensaje("Error al obtener resumen.");
+      setHabilitarDetalle(false);
     }
   };
 
@@ -49,6 +75,13 @@ const Quincenal = () => {
     } catch {
       setMensaje("Error al obtener detalle.");
     }
+  };
+
+  const cerrarDetalle = () => {
+    setEmpleadoSeleccionado(null);
+    setDetalle([]);
+    setIdPeriodo("");
+    obtenerResumenSinPeriodo();
   };
 
   const generarPDF = () => {
@@ -92,7 +125,7 @@ const Quincenal = () => {
       ]],
     });
 
-    doc.save(`Detalle_Empleado_${empleado.idEmpleado}.pdf`);
+    doc.save(`Detalle_Quincenal_Empleado_${empleado.idEmpleado}.pdf`);
   };
 
   const empleado = detalle.length > 0 ? detalle[0] : null;
@@ -104,21 +137,32 @@ const Quincenal = () => {
         <div className="quincenal-acciones">
           <input
             type="text"
-            placeholder="ID del Periodo"
+            placeholder="ID del Periodo Quincenal"
             value={idPeriodo}
             onChange={(e) => setIdPeriodo(e.target.value)}
           />
           <button className="quincenal-btn verde" onClick={generarNomina}>Generar</button>
           <button className="quincenal-btn verde" onClick={finalizarPeriodo}>Finalizar</button>
-          <button className="quincenal-btn gris" onClick={obtenerResumen}>Resumen</button>
+          <button
+            className="quincenal-btn gris"
+            onClick={() => {
+              if (idPeriodo) {
+                obtenerResumenConPeriodo();
+              } else {
+                obtenerResumenSinPeriodo();
+              }
+            }}
+          >
+            Resumen
+          </button>
         </div>
       </div>
 
-      {mensaje && <p><strong>{mensaje}</strong></p>}
+      {mensaje && <div className="mensaje-nota"><strong>{mensaje}</strong></div>}
 
-      {resumen.length > 0 && (
+      {resumen.length > 0 && !empleadoSeleccionado && (
         <>
-          <h3>Resumen</h3>
+          <h3>Resumen Quincenal</h3>
           <table className="quincenal-tabla">
             <thead>
               <tr>
@@ -141,7 +185,12 @@ const Quincenal = () => {
                   <td>{item.totalDescuentos}</td>
                   <td>{item.salarioNeto}</td>
                   <td>
-                    <button onClick={() => obtenerDetalle(item.idEmpleado)}>Ver Detalle</button>
+                    <button
+                      onClick={() => obtenerDetalle(item.idEmpleado)}
+                      disabled={!habilitarDetalle}
+                    >
+                      Ver Detalle
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -152,8 +201,8 @@ const Quincenal = () => {
 
       {empleado && (
         <>
-          <h3>Detalle del Empleado #{empleadoSeleccionado}</h3>
-          <button className="quincenal-btn cerrar" onClick={() => setEmpleadoSeleccionado(null)}>Cerrar Detalle</button>
+          <h3>Detalle del Empleado #{empleadoSeleccionado} - Nómina Quincenal</h3>
+          <button className="quincenal-btn cerrar" onClick={cerrarDetalle}>Cerrar Detalle</button>
           <button className="quincenal-btn pdf" onClick={generarPDF}>Descargar PDF</button>
           <table className="quincenal-tabla">
             <thead>

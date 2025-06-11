@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './Semanal.css';
 import jsPDF from "jspdf";
@@ -10,17 +10,25 @@ const Semanal = () => {
   const [detalle, setDetalle] = useState([]);
   const [resumen, setResumen] = useState([]);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
+  const [habilitarDetalle, setHabilitarDetalle] = useState(false);
+
+  useEffect(() => {
+    obtenerResumenSinPeriodo();
+  }, []);
+
+  useEffect(() => {
+    if (mensaje) {
+      const timer = setTimeout(() => setMensaje(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [mensaje]);
 
   const generarNomina = async () => {
     try {
       const response = await axios.post(`http://localhost:8095/detallenominaS/generar/${idPeriodo}`);
       setMensaje(response.data);
     } catch (error) {
-      if (error.response && error.response.data) {
-        setMensaje(error.response.data);
-      } else {
-        setMensaje("Error al generar la nómina semanal.");
-      }
+      setMensaje(error.response?.data || "Error al generar la nómina semanal.");
     }
   };
 
@@ -33,13 +41,27 @@ const Semanal = () => {
     }
   };
 
-  const obtenerResumen = async () => {
+  const obtenerResumenConPeriodo = async () => {
     try {
       const response = await axios.get(`http://localhost:8095/detallenominaS/resumen/${idPeriodo}`);
       setResumen(response.data);
       setMensaje("Resumen semanal cargado.");
+      setHabilitarDetalle(true);
     } catch (error) {
       setMensaje("Error al obtener resumen semanal.");
+      setHabilitarDetalle(false);
+    }
+  };
+
+  const obtenerResumenSinPeriodo = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8095/detallenominaS/resumen`);
+      setResumen(response.data);
+      setMensaje("Resumen semanal cargado.");
+      setHabilitarDetalle(false);
+    } catch (error) {
+      setMensaje("Error al obtener resumen semanal.");
+      setHabilitarDetalle(false);
     }
   };
 
@@ -55,6 +77,13 @@ const Semanal = () => {
     }
   };
 
+  const cerrarDetalle = () => {
+    setEmpleadoSeleccionado(null);
+    setDetalle([]);
+    setIdPeriodo("");
+    obtenerResumenSinPeriodo();
+  };
+
   const generarPDF = () => {
     if (!detalle.length) return;
 
@@ -63,7 +92,6 @@ const Semanal = () => {
 
     doc.setFontSize(16);
     doc.text("Detalle de Nómina Semanal", 14, 20);
-
     doc.setFontSize(12);
     doc.text(`ID Empleado: ${empleado.idEmpleado}`, 14, 30);
     doc.text(`Nombre: ${empleado.nombreEmpleado}`, 14, 38);
@@ -115,13 +143,21 @@ const Semanal = () => {
           />
           <button className="semanal-btn verde" onClick={generarNomina}>Generar</button>
           <button className="semanal-btn verde" onClick={finalizarPeriodo}>Finalizar</button>
-          <button className="semanal-btn gris" onClick={obtenerResumen}>Resumen</button>
+          <button
+            className="semanal-btn gris"
+            onClick={() => {
+              if (idPeriodo) obtenerResumenConPeriodo();
+              else obtenerResumenSinPeriodo();
+            }}
+          >
+            Resumen
+          </button>
         </div>
       </div>
 
-      {mensaje && <p><strong>{mensaje}</strong></p>}
+      {mensaje && <div className="mensaje-nota"><strong>{mensaje}</strong></div>}
 
-      {resumen.length > 0 && (
+      {resumen.length > 0 && !empleadoSeleccionado && (
         <>
           <h3>Resumen Semanal</h3>
           <table className="semanal-tabla">
@@ -146,7 +182,12 @@ const Semanal = () => {
                   <td>{item.totalDescuentos}</td>
                   <td>{item.salarioNeto}</td>
                   <td>
-                    <button onClick={() => obtenerDetalle(item.idEmpleado)}>Ver Detalle</button>
+                    <button
+                      onClick={() => obtenerDetalle(item.idEmpleado)}
+                      disabled={!habilitarDetalle}
+                    >
+                      Ver Detalle
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -158,7 +199,7 @@ const Semanal = () => {
       {empleado && (
         <>
           <h3>Detalle del Empleado #{empleadoSeleccionado} - Nómina Semanal</h3>
-          <button className="semanal-btn cerrar" onClick={() => setEmpleadoSeleccionado(null)}>Cerrar Detalle</button>
+          <button className="semanal-btn cerrar" onClick={cerrarDetalle}>Cerrar Detalle</button>
           <button className="semanal-btn pdf" onClick={generarPDF}>Descargar PDF</button>
           <table className="semanal-tabla">
             <thead>
