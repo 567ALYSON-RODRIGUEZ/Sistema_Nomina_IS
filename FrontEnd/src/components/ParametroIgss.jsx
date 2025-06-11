@@ -113,7 +113,6 @@ function IgssCrud() {
       <div className="igss-barra">
         <h2>Gestión de Parámetros IGSS</h2>
         <div className="igss-acciones">
-          <button className="igss-btn-nuevo" onClick={() => abrirModal()}>+ Nuevo</button>
           <input type="text" value={idBuscar} onChange={e => setIdBuscar(e.target.value)} placeholder="Buscar por ID" />
           <button className="igss-btn-buscar" onClick={buscarPorId}>Buscar</button>
           <button className="igss-btn-buscar" onClick={cargarParametros}>Regresar</button>
@@ -137,7 +136,6 @@ function IgssCrud() {
               onChange={e => handleChange(e, !!editandoParametro)}
             >
               <option value="laboral">Laboral</option>
-              <option value="patronal">Patronal</option>
             </select>
             <input
               type="text"
@@ -193,7 +191,6 @@ function IgssCrud() {
             <tr key={p.idParametro}>
               <td>
                 <button className="igss-btn-editar" onClick={() => abrirModal(p)}><FontAwesomeIcon icon={faPen} /></button>
-                <button className="igss-btn-eliminar" onClick={() => eliminarParametro(p.idParametro)}><FontAwesomeIcon icon={faTrash} /></button>
               </td>
               <td>{p.idParametro}</td>
               <td>{p.porcentaje}%</td>

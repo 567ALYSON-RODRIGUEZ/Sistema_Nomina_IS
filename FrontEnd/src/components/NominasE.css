@@ -7,7 +7,6 @@
   font-family: 'Courier New', Courier, monospace;
 }
 
-
 .barra-superior-nominas {
   display: flex;
   justify-content: space-between;
@@ -23,59 +22,47 @@
   color: white;
   border: none;
   padding: 8px 14px;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 6px;
   font-weight: bold;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .btn-nueva-nomina:hover {
   background-color: #4caf50;
 }
 
-
 .tabla-nominas {
   width: 100%;
-  margin-top: 20px;
   border-collapse: collapse;
-  font-size: 14px;
+  margin-top: 15px;
 }
 
-.tabla-nominas thead tr {
-  background-color: #46576b;
+.tabla-nominas th, .tabla-nominas td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.tabla-nominas th {
+  background-color: #252f35;
   color: white;
 }
 
-.tabla-nominas th,
-.tabla-nominas td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-  vertical-align: middle;
-}
-
-
-.btn-editar,
-.btn-eliminar {
-  color: black;
-  background: transparent;
-  font-size: 12px;
-  padding: 6px 10px;
-  border: 1px solid #46576b;
+.btn-editar, .btn-eliminar {
+  background-color: transparent;
+  border: none;
   cursor: pointer;
-  border-radius: 5px;
-  margin-right: 5px;
-  transition: background-color 0.3s ease;
+  margin: 0 5px;
+  font-size: 18px;
+  color: #555;
 }
 
 .btn-editar:hover {
-  background-color: #a5b1c2;
+  color: #4caf50;
 }
 
 .btn-eliminar:hover {
-  background-color: #f44336;
-  color: white;
+  color: #f44336;
 }
 
 .modal {
@@ -84,7 +71,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0,0,0,0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,61 +79,48 @@
 }
 
 .modal-contenido {
-  background-color: #fff;
-  padding: 30px;
+  background-color: white;
+  padding: 25px 30px;
   border-radius: 10px;
   width: 400px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  position: relative;
-  font-size: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
 }
 
 .modal-contenido h3 {
-  margin-top: 0;
-  color: #333;
-  font-size: 20px;
   margin-bottom: 20px;
   font-weight: bold;
 }
 
-
-.modal-contenido input,
-.modal-contenido select {
+.modal-contenido select,
+.modal-contenido input[type="date"],
+.modal-contenido input[type="number"] {
   width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
+  padding: 8px 10px;
+  margin-bottom: 15px;
   border-radius: 6px;
-  font-size: 14px;
-  box-sizing: border-box;
+  border: 1px solid #ccc;
 }
-
 
 .modal-botones {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 15px;
+  justify-content: space-between;
 }
 
-
 .modal-botones button {
-  padding: 8px 16px;
+  padding: 8px 15px;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 6px;
   font-weight: bold;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .modal-botones button:first-child {
-  background-color: #4caf50;
+  background-color: #5fbe62;
   color: white;
 }
 
 .modal-botones button:first-child:hover {
-  background-color: #45a049;
+  background-color: #4caf50;
 }
 
 .modal-botones button:last-child {
@@ -156,4 +130,16 @@
 
 .modal-botones button:last-child:hover {
   background-color: #d32f2f;
+}
+
+
+
+.igss-btn-buscar {
+  background-color: #6d7e8b;
+}
+
+.igss-acciones input[type="text"] {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

@@ -4,13 +4,11 @@ import com.api.nomina.datos.DDetalleNominaM;
 import com.api.nomina.modelo.EDetalleNominaM;
 import com.api.nomina.datos.DDetalleNominadto;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -29,7 +27,7 @@ public class resGenerarNominaM {
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error al generar la nómina.");
+                    .body("Error al generar la nómina.");
         }
     }
 
@@ -41,7 +39,7 @@ public class resGenerarNominaM {
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error al finalizar el periodo.");
+                    .body("Error al finalizar el periodo.");
         }
     }
 
@@ -53,20 +51,33 @@ public class resGenerarNominaM {
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error al obtener el detalle de la nómina.");
+                    .body("Error al obtener el detalle de la nómina.");
         }
     }
 
     @GetMapping("/resumen/{idPeriodo}")
-    public ResponseEntity<?> obtenerResumen(@PathVariable Integer idPeriodo) {
+    public ResponseEntity<?> obtenerResumenPorPeriodo(@PathVariable Integer idPeriodo) {
         try {
             List<DDetalleNominadto> resumen = ddetalleNomina.obtenerResumen(idPeriodo);
             return ResponseEntity.ok(resumen);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error al obtener el resumen de la nómina.");
+                    .body("Error al obtener el resumen de la nómina.");
         }
     }
 
+    
+    @GetMapping("/resumen")
+    public ResponseEntity<?> obtenerTodosLosResumenes() {
+        try {
+         
+        	List<DDetalleNominadto> resumen = ddetalleNomina.obtenerTodosLosResumenes();
+            return ResponseEntity.ok(resumen);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener todos los resúmenes de nómina.");
+        }
+    }
 }

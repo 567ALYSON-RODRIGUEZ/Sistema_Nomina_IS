@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './Mensual.css';
 import jsPDF from "jspdf";
@@ -10,17 +10,30 @@ const Mensual = () => {
   const [detalle, setDetalle] = useState([]);
   const [resumen, setResumen] = useState([]);
   const [empleadoSeleccionado, setEmpleadoSeleccionado] = useState(null);
+  const [habilitarDetalle, setHabilitarDetalle] = useState(false);
+
+  useEffect(() => {
+    obtenerResumenSinPeriodo();
+  }, []);
+
+  // Limpiar mensaje automáticamente después de 3 segundos
+  useEffect(() => {
+    if (mensaje) {
+      const timer = setTimeout(() => {
+        setMensaje("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [mensaje]);
+
+  // ... todas las funciones existentes (generarNomina, finalizarPeriodo, etc) sin cambio
 
   const generarNomina = async () => {
     try {
       const response = await axios.post(`http://localhost:8095/detallenominaM/generar/${idPeriodo}`);
       setMensaje(response.data);
     } catch (error) {
-      if (error.response && error.response.data) {
-        setMensaje(error.response.data);
-      } else {
-        setMensaje("Error al generar la nómina mensual.");
-      }
+      setMensaje(error.response?.data || "Error al generar la nómina mensual.");
     }
   };
 
@@ -33,13 +46,27 @@ const Mensual = () => {
     }
   };
 
-  const obtenerResumen = async () => {
+  const obtenerResumenConPeriodo = async () => {
     try {
       const response = await axios.get(`http://localhost:8095/detallenominaM/resumen/${idPeriodo}`);
       setResumen(response.data);
       setMensaje("Resumen mensual cargado.");
+      setHabilitarDetalle(true);
     } catch (error) {
       setMensaje("Error al obtener resumen mensual.");
+      setHabilitarDetalle(false);
+    }
+  };
+
+  const obtenerResumenSinPeriodo = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8095/detallenominaM/resumen`);
+      setResumen(response.data);
+      setMensaje("Resumen mensual cargado.");
+      setHabilitarDetalle(false);
+    } catch (error) {
+      setMensaje("Error al obtener resumen mensual.");
+      setHabilitarDetalle(false);
     }
   };
 
@@ -53,6 +80,13 @@ const Mensual = () => {
     } catch (error) {
       setMensaje("Error al obtener detalle mensual.");
     }
+  };
+
+  const cerrarDetalle = () => {
+    setEmpleadoSeleccionado(null);
+    setDetalle([]);
+    setIdPeriodo("");
+    obtenerResumenSinPeriodo();
   };
 
   const generarPDF = () => {
@@ -114,13 +148,29 @@ const Mensual = () => {
           />
           <button className="mensual-btn verde" onClick={generarNomina}>Generar</button>
           <button className="mensual-btn verde" onClick={finalizarPeriodo}>Finalizar</button>
-          <button className="mensual-btn gris" onClick={obtenerResumen}>Resumen</button>
+          <button
+            className="mensual-btn gris"
+            onClick={() => {
+              if (idPeriodo) {
+                obtenerResumenConPeriodo();
+              } else {
+                obtenerResumenSinPeriodo();
+              }
+            }}
+          >
+            Resumen
+          </button>
         </div>
       </div>
 
-      {mensaje && <p><strong>{mensaje}</strong></p>}
+      {/* Mensaje centrado y tipo nota informativa */}
+      {mensaje && (
+        <div className="mensaje-nota">
+          <strong>{mensaje}</strong>
+        </div>
+      )}
 
-      {resumen.length > 0 && (
+      {resumen.length > 0 && !empleadoSeleccionado && (
         <>
           <h3>Resumen Mensual</h3>
           <table className="mensual-tabla">
@@ -145,7 +195,12 @@ const Mensual = () => {
                   <td>{item.totalDescuentos}</td>
                   <td>{item.salarioNeto}</td>
                   <td>
-                    <button onClick={() => obtenerDetalle(item.idEmpleado)}>Ver Detalle</button>
+                    <button
+                      onClick={() => obtenerDetalle(item.idEmpleado)}
+                      disabled={!habilitarDetalle}
+                    >
+                      Ver Detalle
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -157,8 +212,12 @@ const Mensual = () => {
       {empleado && (
         <>
           <h3>Detalle del Empleado #{empleadoSeleccionado} - Nómina Mensual</h3>
-          <button className="mensual-btn cerrar" onClick={() => setEmpleadoSeleccionado(null)}>Cerrar Detalle</button>
-          <button className="mensual-btn pdf" onClick={generarPDF}>Descargar PDF</button>
+          <button className="mensual-btn cerrar" onClick={cerrarDetalle}>
+            Cerrar Detalle
+          </button>
+          <button className="mensual-btn pdf" onClick={generarPDF}>
+            Descargar PDF
+          </button>
           <table className="mensual-tabla">
             <thead>
               <tr>

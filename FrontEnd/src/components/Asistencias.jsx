@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Asistencias.css'; 
+import './Asistencias.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -31,16 +31,13 @@ function AsistenciaCrud() {
     .catch(err => console.error("Error al cargar asistencias:", err));
   };
 
-  // Formatear hora a HH:mm:ss
   const formatearHora = (hora) => {
     if (!hora) return '';
-    return hora.length === 5 ? hora + ':00' : hora; // si es HH:mm agregar :00
+    return hora.length === 5 ? hora + ':00' : hora;
   };
 
   const crearAsistencia = () => {
     const token = localStorage.getItem('token');
-
-    // Construir objeto con formato correcto (sin idAsistencia)
     const asistenciaEnviar = {
       idEmpleado: Number(nuevaAsistencia.idEmpleado),
       fecha: nuevaAsistencia.fecha,
@@ -67,7 +64,6 @@ function AsistenciaCrud() {
 
   const actualizarAsistencia = () => {
     const token = localStorage.getItem('token');
-
     const asistenciaEnviar = {
       idAsistencia: editandoAsistencia.idAsistencia,
       idEmpleado: Number(editandoAsistencia.idEmpleado),
@@ -213,39 +209,41 @@ function AsistenciaCrud() {
         </div>
       )}
 
-      <table className="asistencia-tabla">
-        <thead>
-          <tr>
-            <th>Acción</th>
-            <th>ID</th>
-            <th>ID Empleado</th>
-            <th>Fecha</th>
-            <th>Hora Entrada</th>
-            <th>Hora Salida</th>
-            <th>Tipo</th>
-          </tr>
-        </thead>
-        <tbody>
-          {asistencias.map(a => (
-            <tr key={a.idAsistencia}>
-              <td>
-                <button className="asistencia-btn-editar" onClick={() => abrirModal(a)}>
-                  <FontAwesomeIcon icon={faPen} />
-                </button>
-                <button className="asistencia-btn-eliminar" onClick={() => eliminarAsistencia(a.idAsistencia)}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </td>
-              <td>{a.idAsistencia}</td>
-              <td>{a.idEmpleado}</td>
-              <td>{a.fecha}</td>
-              <td>{a.horaEntrada}</td>
-              <td>{a.horaSalida}</td>
-              <td>{a.tipo}</td>
+      <div className="asistencia-tabla-wrapper">
+        <table className="asistencia-tabla">
+          <thead>
+            <tr>
+              <th>Acción</th>
+              <th>ID</th>
+              <th>ID Empleado</th>
+              <th>Fecha</th>
+              <th>Hora Entrada</th>
+              <th>Hora Salida</th>
+              <th>Tipo</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {asistencias.map(a => (
+              <tr key={a.idAsistencia}>
+                <td>
+                  <button className="asistencia-btn-editar" onClick={() => abrirModal(a)}>
+                    <FontAwesomeIcon icon={faPen} />
+                  </button>
+                  <button className="asistencia-btn-eliminar" onClick={() => eliminarAsistencia(a.idAsistencia)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+                <td>{a.idAsistencia}</td>
+                <td>{a.idEmpleado}</td>
+                <td>{a.fecha}</td>
+                <td>{a.horaEntrada}</td>
+                <td>{a.horaSalida}</td>
+                <td>{a.tipo}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

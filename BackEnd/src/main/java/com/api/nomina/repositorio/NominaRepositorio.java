@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.api.nomina.modelo.ENomina;
 
-@Repository
 public interface NominaRepositorio extends JpaRepository<ENomina, Integer> {
 
-    // Procedimiento para CREATE, UPDATE, DELETE
     @Procedure(name = "Nomina.spNomina")
     void spGestionNomina(
         @Param("accion") String accion,
@@ -26,7 +24,6 @@ public interface NominaRepositorio extends JpaRepository<ENomina, Integer> {
         @Param("id_periodo") Integer idPeriodo
     );
 
-    // Procedimiento para SELECT (READ, READ_ID, etc.)
     @Procedure(name = "Nomina.spNominaListar")
     List<ENomina> spNominaListar(
         @Param("accion") String accion,
