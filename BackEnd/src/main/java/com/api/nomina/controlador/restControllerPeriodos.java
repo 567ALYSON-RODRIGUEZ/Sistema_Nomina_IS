@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.api.nomina.datos.DPeriodosNomina;
 import com.api.nomina.modelo.EPeriodosNomina;
+import com.api.nomina.modelo.EPuesto;
 
 @CrossOrigin(origins = "http://localhost:5255")
 @RestController
@@ -24,10 +25,11 @@ public class restControllerPeriodos{
     public EPeriodosNomina crearPeriodo(@RequestBody EPeriodosNomina periodo) {
         try {
             dperiodo.crearPeriodo(
+            	null,
                 periodo.getTipo_periodo(),
                 periodo.getDescripcion(),
-                Date.valueOf(periodo.getFecha_inicio()),
-                Date.valueOf(periodo.getFecha_fin()),
+                periodo.getFecha_inicio(),
+                periodo.getFecha_fin(),
                 periodo.getDias_a_pagar(),
                 periodo.getNumero_pago(),
                 periodo.getCodigo_pago(),
@@ -45,9 +47,13 @@ public class restControllerPeriodos{
     @GetMapping("/obtenerTodos")
     public List<EPeriodosNomina> obtenerTodos() {
         try {
-            return dperiodo.mostrarTodosPeriodos();
+        	List<EPeriodosNomina> listado = dperiodo.mostrarTodosPeriodos();
+			System.out.println("Datos obtenidos correctamente.");
+			return listado;
+           
         } catch (Exception ex) {
             ex.printStackTrace();
+            System.out.println("No se han encontrado datos para mostrar.");
             return List.of();
         }
     }
@@ -66,7 +72,8 @@ public class restControllerPeriodos{
     // PUT: http://localhost:8095/periodo/actualizar/1
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<EPeriodosNomina> actualizarPeriodo(@PathVariable Integer id, @RequestBody EPeriodosNomina periodo) {
-        try {
+	    System.out.println("Entra al método actualizacion Periodo");
+    	try {
             if (!id.equals(periodo.getId_periodo())) {
                 return ResponseEntity.badRequest().body(null);
             }
@@ -75,8 +82,8 @@ public class restControllerPeriodos{
                 id,
                 periodo.getTipo_periodo(),
                 periodo.getDescripcion(),
-                Date.valueOf(periodo.getFecha_inicio()),
-                Date.valueOf(periodo.getFecha_fin()),
+                periodo.getFecha_inicio(),
+                periodo.getFecha_fin(),
                 periodo.getDias_a_pagar(),
                 periodo.getNumero_pago(),
                 periodo.getCodigo_pago(),

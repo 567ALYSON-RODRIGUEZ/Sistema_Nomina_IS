@@ -53,9 +53,16 @@
 }
 
 .asistencia-tabla thead tr {
+  position: sticky;
   background-color: #3d4d5c;
   color: white;
   font-family: 'Courier New', Courier, monospace;
+}
+
+.asistencia-tabla thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .asistencia-tabla th,

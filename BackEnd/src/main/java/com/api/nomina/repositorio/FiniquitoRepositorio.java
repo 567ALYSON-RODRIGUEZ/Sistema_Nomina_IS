@@ -16,7 +16,4 @@ public interface FiniquitoRepositorio extends JpaRepository<EFiniquito, Integer>
 
 	@Procedure(name = "Finiquito.generarFiniquito")
 	String generarFiniquito(@Param("id_empleado") int idEmpleado);
-
-    @Query("SELECT f FROM EFiniquito f WHERE f.idEmpleado = :idEmpleado")
-    List<EFiniquito> findByIdEmpleado(@Param("idEmpleado") int idEmpleado);
 }

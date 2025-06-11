@@ -1,208 +1,254 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './PeriodoNomina.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-export default function PeriodosNomina() {
-  const [visible, setVisible] = useState(true);
-  const [minimizado, setMinimizado] = useState(false);
-  const [maximizado, setMaximizado] = useState(false);
-  const [mostrarNuevaVentana, setMostrarNuevaVentana] = useState(false);
-
-  const [clave, setClave] = useState('');
-  const [tipo, setTipo] = useState('');
-  const [config, setConfig] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [fechaIni, setFechaIni] = useState('');
-  const [fechaFin, setFechaFin] = useState('');
-  const [dias, setDias] = useState('');
+function PeriodosPanel() {
   const [periodos, setPeriodos] = useState([]);
-  const [editandoId, setEditandoId] = useState(null);
-
-  const camposCompletos = clave && tipo && config && descripcion && fechaIni && fechaFin && dias;
-
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  };
-
-  const obtenerPeriodos = async () => {
-    try {
-      const res = await axios.get('http://localhost:8095/periodo/obtenerTodos', headers);
-      setPeriodos(res.data);
-    } catch (err) {
-      console.error("Error al obtener períodos:", err);
-    }
-  };
-
-  const limpiarCampos = () => {
-    setClave('');
-    setTipo('');
-    setConfig('');
-    setDescripcion('');
-    setFechaIni('');
-    setFechaFin('');
-    setDias('');
-    setEditandoId(null);
-  };
-
-  const handleCrear = async () => {
-    if (camposCompletos) {
-      try {
-        const nuevoPeriodo = {
-          tipo_periodo: tipo,
-          descripcion: descripcion,
-          fecha_inicio: fechaIni,
-          fecha_fin: fechaFin,
-          dias_a_pagar: parseInt(dias),
-          numero_pago: clave,
-          codigo_pago: config,
-          estado: "Activo"
-        };
-
-        await axios.post('http://localhost:8095/periodo/crear', nuevoPeriodo, headers);
-        alert("Periodo creado correctamente.");
-        setMostrarNuevaVentana(true);
-        obtenerPeriodos();
-        limpiarCampos();
-      } catch (error) {
-        console.error("Error al crear el periodo:", error);
-        alert("Error al crear el período.");
-      }
-    }
-  };
-
-  const handleEditar = (periodo) => {
-    setEditandoId(periodo.id_periodo);
-    setClave(periodo.numero_pago);
-    setTipo(periodo.tipo_periodo);
-    setConfig(periodo.codigo_pago);
-    setDescripcion(periodo.descripcion);
-    setFechaIni(periodo.fecha_inicio);
-    setFechaFin(periodo.fecha_fin);
-    setDias(periodo.dias_a_pagar);
-    setVisible(true);
-    setMaximizado(true);
-    setMinimizado(false);
-  };
-
-  const handleActualizar = async () => {
-    if (editandoId && camposCompletos) {
-      try {
-        const actualizado = {
-          id_periodo: editandoId,
-          tipo_periodo: tipo,
-          descripcion: descripcion,
-          fecha_inicio: fechaIni,
-          fecha_fin: fechaFin,
-          dias_a_pagar: parseInt(dias),
-          numero_pago: clave,
-          codigo_pago: config,
-          estado: "Activo"
-        };
-
-        await axios.put(`http://localhost:8095/periodo/actualizar/${editandoId}`, actualizado, headers);
-        alert("Periodo actualizado correctamente.");
-        obtenerPeriodos();
-        limpiarCampos();
-        setMostrarNuevaVentana(false);
-      } catch (error) {
-        console.error("Error al actualizar:", error);
-        alert("Error al actualizar el período.");
-      }
-    }
-  };
-
-  const handleCerrar = async (id) => {
-    try {
-      await axios.patch(`http://localhost:8095/periodo/cerrar/${id}`, null, headers);
-      alert("Periodo cerrado correctamente.");
-      obtenerPeriodos();
-    } catch (error) {
-      console.error("Error al cerrar:", error);
-      alert("Error al cerrar el período.");
-    }
-  };
+  const [nuevoPeriodo, setNuevoPeriodo] = useState({
+    tipo_periodo: '',
+    descripcion: '',
+    fecha_inicio: '',
+    fecha_fin: '',
+    dias_a_pagar: '',
+    numero_pago: '',
+    codigo_pago: '',
+    estado: 'Abierto'
+  });
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [editandoPeriodo, setEditandoPeriodo] = useState(null);
+  const [idBuscar, setIdBuscar] = useState('');
 
   useEffect(() => {
-    obtenerPeriodos();
+    cargarTodos();
   }, []);
 
-  if (!visible) return null;
+  const cargarTodos = () => {
+    const token = localStorage.getItem('token');
+
+    axios.get('http://localhost:8095/periodo/obtenerTodos', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => setPeriodos(res.data))
+      .catch(err => console.error("Error de axios:", err));
+  };
+
+    const eliminarPeriodo = (id) => {
+    const confirmacion = window.confirm("¿Estás seguro de que deseas (cerrar) este periodo?");
+    if (!confirmacion) return;
+
+    axios.patch(`http://localhost:8095/periodo/cerrar/${id}`, null, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(() => {
+      alert("Periodo cerrado correctamente.");
+      setPeriodos(periodos.filter(p => p.id_periodo !== id));
+    })
+    .catch(err => {
+      console.error("Error al cerrar:", err);
+      alert("Error al cerrar el periodo.");
+    });
+  };
+
+  const crearPeriodo = () => {
+    axios.post('http://localhost:8095/periodo/crear', nuevoPeriodo, {
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+      .then(() => {
+        alert("Periodo creado correctamente.");
+        setMostrarModal(false);
+        setNuevoPeriodo({
+          tipo_periodo: '',
+          descripcion: '',
+          fecha_inicio: '',
+          fecha_fin: '',
+          dias_a_pagar: '',
+          numero_pago: '',
+          codigo_pago: '',
+          estado: 'Abierto'
+        });
+        cargarTodos();
+      })
+      .catch(err => {
+        console.error("Error al crear:", err);
+        alert("No se pudo crear el periodo.");
+      });
+  };
+
+  const actualizarPeriodo = () => {
+    axios.put(`http://localhost:8095/periodo/actualizar/${editandoPeriodo.id_periodo}`, editandoPeriodo,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+      .then(() => {
+        alert("Periodo actualizado correctamente.");
+        setMostrarModal(false);
+        setEditandoPeriodo(null);
+        cargarTodos();
+      })
+      .catch(err => {
+        console.error("Error al actualizar:", err);
+        alert("No se pudo actualizar el periodo.");
+      });
+  };
+
+  const buscarPeriodoPorId = () => {
+    axios.get(`http://localhost:8095/periodo/obtenerPorId/${idBuscar}`,{
+      headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+      .then(res => setPeriodos([res.data]))
+      .catch(err => {
+        console.error("Error al buscar:", err);
+        alert("Periodo no encontrado.");
+      });
+  };
+
+  const abrirModalEditar = (periodo) => {
+    setEditandoPeriodo(periodo);
+    setNuevoPeriodo({
+      tipo_periodo: periodo.tipo_periodo,
+      descripcion: periodo.descripcion,
+      fecha_inicio: periodo.fecha_inicio.split('T')[0],
+      fecha_fin: periodo.fecha_fin.split('T')[0],
+      dias_a_pagar: periodo.dias_a_pagar,
+      numero_pago: periodo.numero_pago,
+      codigo_pago: periodo.codigo_pago,
+      estado: periodo.estado
+    });
+    setMostrarModal(true);
+  };
 
   return (
-    <>
-      <div className={`ventana ${maximizado ? 'maximizada' : ''}`}>
-        <div className="header">
-          <span>Períodos de nómina</span>
-          <div className="acciones">
-            <button onClick={() => setMinimizado(!minimizado)} title="Minimizar">🗕</button>
-            <button onClick={() => setMaximizado(!maximizado)} title="Maximizar / Restaurar">
-              {maximizado ? '🗗' : '🗖'}
-            </button>
-            <button onClick={() => setVisible(false)} title="Cerrar">✖</button>
-          </div>
+    <div className="contenedor-panel">
+      <div className="barra-superiorp">
+        <h2>Gestión de Periodos</h2>
+        <div className="acciones-barra">
+          <button className="btn-nuevo" onClick={() => { setEditandoPeriodo(null); setMostrarModal(true); }}>
+            + Nuevo
+          </button>
+          <input
+            type="text"
+            value={idBuscar}
+            onChange={e => setIdBuscar(e.target.value)}
+            placeholder="Buscar periodo por ID"
+          />
+          <button className="btn-buscar" onClick={buscarPeriodoPorId}>Buscar</button>
+          <button className="btn-buscar" onClick={cargarTodos}>Regresar</button>
         </div>
-
-        {!minimizado && (
-          <>
-            <div className="barra-superiorb">
-              <button
-                className="boton-nuevo"
-                title={editandoId ? "Actualizar periodo" : "Crear nueva nómina"}
-                onClick={editandoId ? handleActualizar : handleCrear}
-                disabled={!camposCompletos}
-                style={{ opacity: camposCompletos ? 1 : 0.5 }}
-              >
-                {editandoId ? '💾' : '📁'}
-              </button>
-            </div>
-
-            <div className="formulario">
-              <div className="campo"><label>Clave:</label><input value={clave} onChange={e => setClave(e.target.value)} type="text" /></div>
-              <div className="campo"><label>Tipo periodo:</label><input value={tipo} onChange={e => setTipo(e.target.value)} type="text" /></div>
-              <div className="campo"><label>Configuración:</label><input value={config} onChange={e => setConfig(e.target.value)} type="text" /></div>
-              <div className="campo descripcion"><label>Descripción:</label><input value={descripcion} onChange={e => setDescripcion(e.target.value)} type="text" /></div>
-              <div className="campo"><label>Fecha inicial:</label><input value={fechaIni} onChange={e => setFechaIni(e.target.value)} type="date" /></div>
-              <div className="campo"><label>Fecha final:</label><input value={fechaFin} onChange={e => setFechaFin(e.target.value)} type="date" /></div>
-              <div className="campo"><label>Días a pagar:</label><input value={dias} onChange={e => setDias(e.target.value)} type="number" /></div>
-            </div>
-
-            <div className="lista-periodos">
-              <h3>Períodos existentes</h3>
-              <ul>
-                {periodos.map((p) => (
-                  <li key={p.id_periodo}>
-                    <strong>{p.tipo_periodo}</strong> | {p.fecha_inicio} - {p.fecha_fin} | {p.dias_a_pagar} días
-                    <button onClick={() => handleEditar(p)} title="Editar">✏️</button>
-                    <button onClick={() => handleCerrar(p.id_periodo)} title="Cerrar">🔒</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
       </div>
 
-      {mostrarNuevaVentana && (
-        <div className="ventana nueva-ventana">
-          <div className="header">
-            <span>{editandoId ? "Editar Nómina" : "Nueva Nómina"}</span>
-            <div className="acciones">
-              <button onClick={() => setMostrarNuevaVentana(false)} title="Cerrar">✖</button>
+             {mostrarModal && (
+        <div className="modal">
+          <div className="modal-contenido">
+            <h3>{editandoPeriodo && editandoPeriodo.id_periodo ? 'Editar Periodo' : 'Crear Periodo'}</h3>
+            <input
+              type="text"
+              placeholder="Tipo de periodo"
+              value={editandoPeriodo?.tipo_periodo || ''}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, tipo_periodo: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Descripción"
+              value={editandoPeriodo?.descripcion || ''}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, descripcion: e.target.value })}
+            />
+            <input
+              type="date"
+              value={editandoPeriodo?.fecha_inicio || ''}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, fecha_inicio: e.target.value })}
+            />
+            <input
+              type="date"
+              value={editandoPeriodo?.fecha_fin || ''}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, fecha_fin: e.target.value })}
+            />
+            <input
+              type="number"
+              placeholder="Días a pagar"
+              value={editandoPeriodo?.dias_a_pagar || ''}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, dias_a_pagar: e.target.value })}
+            />
+            <input
+              type="number"
+              placeholder="Número de pago"
+              value={editandoPeriodo?.numero_pago || ''}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, numero_pago: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Código de pago"
+              value={editandoPeriodo?.codigo_pago || ''}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, codigo_pago: e.target.value })}
+            />
+            <select
+              value={editandoPeriodo?.estado || 'Abierto'}
+              onChange={e => setEditandoPeriodo({ ...editandoPeriodo, estado: e.target.value })}
+            >
+              <option value="Abierto">Abierto</option>
+              <option value="Cerrado">Cerrado</option>
+            </select>
+            <div className="modal-botones">
+              <button onClick={editandoPeriodo && editandoPeriodo.id_periodo ? actualizarPeriodo : crearPeriodo}>
+                Guardar
+              </button>
+              <button onClick={() => { setMostrarModal(false); setEditandoPeriodo(null); }}>
+                Cancelar
+              </button>
             </div>
-          </div>
-          <div className="formulario">
-            <p><strong>Clave:</strong> {clave}</p>
-            <p><strong>Tipo periodo:</strong> {tipo}</p>
-            <p><strong>Configuración:</strong> {config}</p>
-            <p><strong>Descripción:</strong> {descripcion}</p>
-            <p><strong>Fecha inicial:</strong> {fechaIni}</p>
-            <p><strong>Fecha final:</strong> {fechaFin}</p>
-            <p><strong>Días a pagar:</strong> {dias}</p>
           </div>
         </div>
       )}
-    </>
+
+      <table className="tabla-puestos">
+        <thead>
+          <tr>
+            <th>Acción</th>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Días</th>
+            <th>Nº Pago</th>
+            <th>Código</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {periodos.map(p => (
+            <tr key={p.id_periodo}>
+              <td>
+                <button className="btn-editar" onClick={() => abrirModalEditar(p)}>
+                  <FontAwesomeIcon icon={faPen} />
+                </button>
+                <button className="btn-eliminar" onClick={() => eliminarPeriodo(p.id_periodo)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </td>
+              <td>{p.id_periodo}</td>
+              <td>{p.tipo_periodo}</td>
+              <td>{p.descripcion}</td>
+              <td>{p.fecha_inicio.split('T')[0]}</td>
+              <td>{p.fecha_fin.split('T')[0]}</td>
+              <td>{p.dias_a_pagar}</td>
+              <td>{p.numero_pago}</td>
+              <td>{p.codigo_pago}</td>
+              <td>{p.estado}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
+
+export default PeriodosPanel;

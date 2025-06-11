@@ -15,8 +15,8 @@ public class DPeriodosNomina {
 	@Autowired
     private PeriodosRepositorio periodosRepositorio;
 
-    public void crearPeriodo(String tipo, String descripcion, Date inicio, Date fin, Integer dias, Integer numeroPago, String codigoPago, String estado) {
-        periodosRepositorio.spGestionPeriodos("C", null, tipo, descripcion, inicio, fin, dias, numeroPago, codigoPago, estado);
+    public void crearPeriodo(Integer id, String tipo, String descripcion, Date inicio, Date fin, Integer dias, Integer numeroPago, String codigoPago, String estado) {
+        periodosRepositorio.spGestionPeriodos("C", id, tipo, descripcion, inicio, fin, dias, numeroPago, codigoPago, estado);
     }
 
     @Transactional(readOnly = true)

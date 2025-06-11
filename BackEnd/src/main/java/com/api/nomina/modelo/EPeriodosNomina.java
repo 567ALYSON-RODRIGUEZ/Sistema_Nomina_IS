@@ -1,6 +1,6 @@
 package com.api.nomina.modelo;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,8 +22,8 @@ import lombok.Setter;
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="id", type= Integer.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="tipo", type= String.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="desc", type= String.class),
-				@StoredProcedureParameter(mode= ParameterMode.IN, name="inicio", type= LocalDate.class),
-				@StoredProcedureParameter(mode= ParameterMode.IN, name="fin", type= LocalDate.class),
+				@StoredProcedureParameter(mode= ParameterMode.IN, name="inicio", type= java.sql.Date.class),
+				@StoredProcedureParameter(mode= ParameterMode.IN, name="fin", type= java.sql.Date.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="dias", type= Integer.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="num_pago", type= Integer.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="cod_pago", type= String.class),
@@ -40,8 +40,8 @@ import lombok.Setter;
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="id", type= Integer.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="tipo", type= String.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="desc", type= String.class),
-				@StoredProcedureParameter(mode= ParameterMode.IN, name="inicio", type= LocalDate.class),
-				@StoredProcedureParameter(mode= ParameterMode.IN, name="fin", type= LocalDate.class),
+				@StoredProcedureParameter(mode= ParameterMode.IN, name="inicio", type= java.sql.Date.class),
+				@StoredProcedureParameter(mode= ParameterMode.IN, name="fin", type= java.sql.Date.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="dias", type= Integer.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="num_pago", type= Integer.class),
 				@StoredProcedureParameter(mode= ParameterMode.IN, name="cod_pago", type= String.class),
@@ -63,8 +63,8 @@ public class EPeriodosNomina {
     private int id_periodo;
     private String tipo_periodo;
     private String descripcion;
-    private LocalDate fecha_inicio;
-    private LocalDate fecha_fin;
+    private java.sql.Date fecha_inicio;
+    private java.sql.Date fecha_fin;
     private int dias_a_pagar;
     private int numero_pago;
     private String codigo_pago;
