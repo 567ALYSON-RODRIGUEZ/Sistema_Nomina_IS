@@ -24,6 +24,7 @@ import Isr from './components/Isr';
 import PlanillaAguinaldo from './components/PlanillaAguinaldo';
 import PlanillaBono14 from './components/PlanillaBono14';
 import Finiquito from './components/Finiquito';
+import Vacaciones from './components/Vacaciones';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -232,6 +233,15 @@ function App() {
         element={
           <ProtectedLayout>
             <Quincenal />
+          </ProtectedLayout>
+        }
+      />
+
+      <Route
+        path="/vacaciones"
+        element={
+          <ProtectedLayout>
+            <Vacaciones />
           </ProtectedLayout>
         }
       />

@@ -65,6 +65,7 @@ function Sidebar({ onSelect }) {
                       <li onClick={() => handleClick('nominas')}><FontAwesomeIcon icon={faMoneyCheckAlt} /> Nóminas</li>
                       <li onClick={() => handleClick('permisos')}><FontAwesomeIcon icon={faUserShield} /> Permisos</li>
                       <li onClick={() => handleClick('isr')}><FontAwesomeIcon icon={faUserShield} /> Calculo ISR</li>
+                      <li onClick={() => handleClick('vacaciones')}><FontAwesomeIcon icon={faClock} /> Vacaciones</li>
                     </>
                   )}
                 </ul>

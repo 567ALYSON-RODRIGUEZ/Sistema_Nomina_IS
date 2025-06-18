@@ -127,5 +127,19 @@ public class resEmpleado {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al buscar el empleado.");
         }
     }
+    
+    @GetMapping("/conPuestos")
+    public ResponseEntity<?> obtenerEmpleadosConPuestos() {
+        try {
+            System.out.println("Endpoint /conPuestos fue llamado"); // Log de depuración
+            List<Map<String, Object>> empleados = dempleado.obtenerEmpleadosConPuestos();
+            System.out.println("Datos obtenidos: " + empleados); // Ver datos
+            return ResponseEntity.ok(empleados);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", ex.getMessage()));
+        }
+    }
 }
 

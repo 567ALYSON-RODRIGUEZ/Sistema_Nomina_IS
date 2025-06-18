@@ -1,8 +1,10 @@
 package com.api.nomina.repositorio;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -43,5 +45,13 @@ public interface EmpleadoRepositorio extends JpaRepository<EEmpleado, Integer> {
         @Param("id_puesto") Integer idPuesto,
         @Param("id_departamento") Integer idDepartamento
     );
+    
+    @Query(value = "SELECT e.nombres, p.nombre as nombrePuesto " +
+    	       "FROM empleados e " +
+    	       "LEFT JOIN puestos p ON e.id_puesto = p.id_puesto " +
+    	       "WHERE e.estado = 'Activo' " +
+    	       "AND (p.estado_puesto = 'Activo' OR e.id_puesto IS NULL)", 
+    	       nativeQuery = true)
+    	List<Map<String, Object>> obtenerEmpleadosConPuestos();
 }
 

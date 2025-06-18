@@ -165,5 +165,15 @@ public class DEmpleado {
 
         return cambios;
     }
+    
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> obtenerEmpleadosConPuestos() {
+        try {
+            List<Map<String, Object>> resultado = empleadoRepositorio.obtenerEmpleadosConPuestos();
+            return resultado;
+        } catch (Exception e) {       
+            throw new RuntimeException("Error al obtener empleados con información de puestos", e);
+        }
+    }
 }
 
