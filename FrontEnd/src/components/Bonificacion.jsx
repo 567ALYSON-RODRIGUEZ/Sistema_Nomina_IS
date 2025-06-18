@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Bonificacion.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 function BonificacionCrud() {
   const [bonificaciones, setBonificaciones] = useState([]);
@@ -60,21 +60,7 @@ function BonificacionCrud() {
       });
   };
 
-  const eliminarBonificacion = (id) => {
-    if (!window.confirm("¿Estás seguro de eliminar esta bonificación?")) return;
-
-    axios.delete(`http://localhost:8095/bonificacion/eliminar/${id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
-      .then(() => {
-        alert("Bonificación eliminada.");
-        setBonificaciones(bonificaciones.filter(b => b.idParametro !== id));
-      })
-      .catch(err => {
-        console.error("Error al eliminar bonificación:", err);
-        alert("No se pudo eliminar.");
-      });
-  };
+ 
 
   const buscarPorId = () => {
     axios.get(`http://localhost:8095/bonificacion/obtenerPorId/${idBuscar}`, {
@@ -111,7 +97,6 @@ function BonificacionCrud() {
       <div className="parametros-barra">
         <h2>Gestión de Bonificaciones</h2>
         <div className="parametros-acciones">
-          <button className="parametros-btn-nuevo" onClick={() => abrirModal()}>+ Nuevo</button>
           <input 
             type="text" 
             value={idBuscar} 
@@ -181,9 +166,6 @@ function BonificacionCrud() {
               <td>
                 <button className="parametros-btn-editar" onClick={() => abrirModal(b)}>
                   <FontAwesomeIcon icon={faPen} />
-                </button>
-                <button className="parametros-btn-eliminar" onClick={() => eliminarBonificacion(b.idParametro)}>
-                  <FontAwesomeIcon icon={faTrash} />
                 </button>
               </td>
               <td>{b.idParametro}</td>

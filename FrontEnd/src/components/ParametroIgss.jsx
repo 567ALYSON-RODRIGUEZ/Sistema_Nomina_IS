@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './ParametroIgss.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 function IgssCrud() {
   const [parametros, setParametros] = useState([]);
@@ -62,22 +62,7 @@ function IgssCrud() {
       });
   };
 
-  const eliminarParametro = (id) => {
-    if (!window.confirm("¿Estás seguro de eliminar este parámetro?")) return;
-
-    axios.delete(`http://localhost:8095/igss/eliminar/${id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
-      .then(() => {
-        alert("Parámetro eliminado.");
-        setParametros(parametros.filter(p => p.idParametro !== id));
-      })
-      .catch(err => {
-        console.error("Error al eliminar parámetro:", err);
-        alert("No se pudo eliminar.");
-      });
-  };
-
+  
   const buscarPorId = () => {
     axios.get(`http://localhost:8095/igss/obtenerPorId/${idBuscar}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }

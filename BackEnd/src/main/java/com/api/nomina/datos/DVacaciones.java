@@ -22,7 +22,6 @@ public class DVacaciones {
         try {
             vacacionesRepositorio.spGestionVacaciones("insertar", null, idEmpleado, fechaInicio, fechaFin, dias, estado);
         } catch (Exception e) {
-            // Manejar excepciones específicas del SP
             throw new RuntimeException("Error al insertar vacación: " + e.getMessage());
         }
     }
@@ -45,18 +44,44 @@ public class DVacaciones {
         }
     }
 
-    // Obtener todas las vacaciones
- // En DVacaciones.java
-    @Transactional(readOnly = true)
-    public List<EVacaciones> obtenerTodas() {
-        return vacacionesRepositorio.listarTodos(); // Usa el nuevo método
+    // Listar con mapeo manual de List<Object[]> a List<DVacacionesdto>
+    public List<DVacacionesdto> listarConNombrePuesto() {
+        List<Object[]> resultados = vacacionesRepositorio.listarVacacionesConEmpleado();
+        List<DVacacionesdto> listaDto = new java.util.ArrayList<>();
+
+        for (Object[] fila : resultados) {
+            DVacacionesdto dto = new DVacacionesdto(
+                (Integer) fila[0],            // idVacacion
+                (Integer) fila[1],            // idEmpleado
+                (String) fila[2],             // nombreCompleto
+                (String) fila[3],             // puesto
+                (java.sql.Date) fila[4],      // fechaInicio
+                (java.sql.Date) fila[5],      // fechaFin
+                (Integer) fila[6],            // dias
+                (String) fila[7]              // estado
+            );
+            listaDto.add(dto);
+        }
+
+        return listaDto;
     }
 
-    // Obtener una vacación por ID
+    public DVacacionesdto obtenerDetallePorId(Integer idVacacion) {
+        return listarConNombrePuesto().stream()
+            .filter(v -> v.getIdVacacion().equals(idVacacion))
+            .findFirst()
+            .orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EVacaciones> obtenerTodas() {
+        return vacacionesRepositorio.listarTodosDesdeSP("listar", null, null, null, null, null, null);
+    }
+
     @Transactional(readOnly = true)
     public EVacaciones obtenerPorId(Integer id) {
         try {
-            List<EVacaciones> lista = vacacionesRepositorio.listarTodos();
+            List<EVacaciones> lista = vacacionesRepositorio.listarTodosDesdeSP("obtener_por_id", id, null, null, null, null, null);
             return lista.isEmpty() ? null : lista.get(0);
         } catch (Exception e) {
             throw new RuntimeException("Error al obtener vacación por ID: " + e.getMessage());

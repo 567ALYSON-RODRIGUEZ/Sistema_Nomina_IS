@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery(
         name = "Vacacion.spVacaciones",
@@ -41,22 +43,34 @@ import java.util.Date;
 @Entity
 @Table(name = "vacaciones")
 public class EVacaciones {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vacacion")
+    @JsonProperty("idVacacion")
     private int id_vacacion;
 
     @Column(name = "id_empleado")
+    @JsonProperty("idEmpleado")
     private int id_empleado;
 
     @Column(name = "fecha_inicio")
+    @JsonProperty("fechaInicio")
     private Date fecha_inicio;
 
     @Column(name = "fecha_fin")
+    @JsonProperty("fechaFin")
     private Date fecha_fin;
 
+    @JsonProperty("dias")
     private int dias;
 
+    @JsonProperty("estado")
     private String estado;
+    
+    @Transient
+    private String nombre_empleado;
+
+    @Transient
+    private String puesto_empleado;
+
 }

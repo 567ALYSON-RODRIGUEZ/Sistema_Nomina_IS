@@ -7,141 +7,109 @@ import { faPen, faTrash, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 function VacacionesPanel() {
   const [vacaciones, setVacaciones] = useState([]);
   const [nuevaVacacion, setNuevaVacacion] = useState({
-    id_empleado: '',
-    fecha_inicio: '',
-    fecha_fin: '',
+    idEmpleado: '',
+    fechaInicio: '',
+    fechaFin: '',
     dias: '',
-    estado: 'Pendiente'
+    estado: 'Pendiente',
+    // Puedes agregar puesto si lo necesitas en creación
   });
   const [mostrarModal, setMostrarModal] = useState(false);
   const [editandoVacacion, setEditandoVacacion] = useState(null);
   const [idBuscar, setIdBuscar] = useState('');
   const [mostrarConstancia, setMostrarConstancia] = useState(false);
   const [vacacionSeleccionada, setVacacionSeleccionada] = useState(null);
-  const [empleados, setEmpleados] = useState([]);
 
   useEffect(() => {
     cargarTodas();
-    cargarEmpleados();
   }, []);
 
-  const cargarEmpleados = async () => {
-  const token = localStorage.getItem('token');
-  try {
-    const response = await axios.get('http://localhost:8095/empleados/conPuestos', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    console.log("Datos recibidos del backend:", response.data);
-    setEmpleados(response.data);
-  } catch (err) {
-    console.error("Error al cargar empleados:", err);
-    setEmpleados([]);
-  }
-};
-
-const obtenerNombreEmpleado = (id) => {
-  const empleado = empleados.find(e => e.idEmpleado == id || e.id_empleado == id);
-  if (!empleado) return 'No encontrado';
-  
-  // Maneja ambos casos: datos nuevos (nombres + apellidos) y viejos (solo nombres)
-  return `${empleado.nombres || ''} ${empleado.apellidos || ''}`.trim();
-};
-
-const obtenerPuestoEmpleado = (id) => {
-  const empleado = empleados.find(e => e.idEmpleado == id || e.id_empleado == id);
-  if (!empleado) return 'No especificado';
-  
-  // Maneja ambos casos: datos nuevos (nombrePuesto) y viejos (puesto.nombre)
-  return empleado.nombrePuesto || empleado.puesto?.nombre || 'No especificado';
-};
-
-  /*const cargarTodas = () => {
+  const cargarTodas = () => {
     const token = localStorage.getItem('token');
     axios.get('http://localhost:8095/vacaciones/obtenerTodos', {
       headers: { Authorization: `Bearer ${token}` }
     })
-      .then(res => setVacaciones(res.data))
-      .catch(err => console.error("Error:", err));
-  };*/
-
-  const cargarTodas = () => {
-  const token = localStorage.getItem('token');
-  axios.get('http://localhost:8095/vacaciones/obtenerTodos', {
-    headers: { Authorization: `Bearer ${token}` }
-  })
-    .then(res => {
-      setVacaciones(res.data);
-      // No necesitamos cargar empleados por separado
-    })
+    .then(res => setVacaciones(res.data))
     .catch(err => console.error("Error:", err));
   };
 
   const eliminarVacacion = (id) => {
     if (!window.confirm("¿Marcar como eliminadas/no permitidas estas vacaciones?")) return;
-    axios.patch(`http://localhost:8095/vacaciones/eliminar/${id}`, null, {
+    axios.delete(`http://localhost:8095/vacaciones/eliminar/${id}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
-      .then(() => {
-        alert("Vacaciones finalizadas.");
-        cargarTodas();
-      })
-      .catch(err => {
-        console.error("Error:", err);
-        alert("No se pudieron finalizar las vacaciones.");
-      });
+    .then(() => {
+      alert("Vacaciones finalizadas.");
+      cargarTodas();
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("No se pudieron finalizar las vacaciones.");
+    });
   };
 
   const crearVacacion = () => {
     axios.post('http://localhost:8095/vacaciones/crear', nuevaVacacion, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
-      .then(() => {
-        alert("Vacación registrada.");
-        setMostrarModal(false);
-        setNuevaVacacion({
-          id_empleado: '',
-          fecha_inicio: '',
-          fecha_fin: '',
-          dias: '',
-          estado: 'Pendiente'
-        });
-        cargarTodas();
-      })
-      .catch(err => {
-        console.error("Error:", err);
-        alert("Error al registrar vacaciones.");
+    .then(() => {
+      alert("Vacación registrada.");
+      setMostrarModal(false);
+      setNuevaVacacion({
+        idEmpleado: '',
+        fechaInicio: '',
+        fechaFin: '',
+        dias: '',
+        estado: 'Pendiente'
       });
+      cargarTodas();
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("Error al registrar vacaciones.");
+    });
   };
 
   const actualizarVacacion = () => {
-    axios.put(`http://localhost:8095/vacaciones/actualizar/${editandoVacacion.id_vacacion}`, editandoVacacion, {
+    axios.put(`http://localhost:8095/vacaciones/actualizar/${editandoVacacion.idVacacion}`, editandoVacacion, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
-      .then(() => {
-        alert("Vacación actualizada.");
-        setMostrarModal(false);
-        setEditandoVacacion(null);
-        cargarTodas();
-      })
-      .catch(err => {
-        console.error("Error:", err);
-        alert("No se pudo actualizar.");
-      });
+    .then(() => {
+      alert("Vacación actualizada.");
+      setMostrarModal(false);
+      setEditandoVacacion(null);
+      cargarTodas();
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("No se pudo actualizar.");
+    });
   };
 
   const buscarPorId = () => {
+    if(!idBuscar) {
+      alert("Ingrese un ID para buscar");
+      return;
+    }
     axios.get(`http://localhost:8095/vacaciones/obtenerPorId/${idBuscar}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
-      .then(res => setVacaciones([res.data]))
-      .catch(err => {
-        console.error("Error:", err);
-        alert("No se encontró la vacación.");
-      });
+    .then(res => {
+      if(res.data) setVacaciones([res.data]);
+      else alert("No se encontró la vacación.");
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("No se encontró la vacación.");
+    });
   };
 
   const abrirModalEditar = (vacacion) => {
-    setEditandoVacacion(vacacion);
+    setEditandoVacacion({
+      ...vacacion,
+      fechaInicio: vacacion.fechaInicio ? vacacion.fechaInicio.split('T')[0] : '',
+      fechaFin: vacacion.fechaFin ? vacacion.fechaFin.split('T')[0] : ''
+    });
     setMostrarModal(true);
   };
 
@@ -150,15 +118,16 @@ const obtenerPuestoEmpleado = (id) => {
     setMostrarConstancia(true);
   };
 
-  // Funciones auxiliares para formato
   const formatDate = (dateString) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
     return `${date.getDate()} Día ${date.toLocaleString('es-ES', { month: 'short' })} ${date.getFullYear()} Año`;
   };
 
   const formatReincorporacionDate = (dateString) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
-    date.setDate(date.getDate() + 1); // Sumar un día para la reincorporación
+    date.setDate(date.getDate() + 1);
     return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
@@ -181,46 +150,46 @@ const obtenerPuestoEmpleado = (id) => {
         </div>
       </div>
 
+      {/* Modal Crear/Editar */}
       {mostrarModal && (
         <div className="modal">
           <div className="modal-contenido">
             <h3>{editandoVacacion ? 'Editar Vacación' : 'Registrar Vacación'}</h3>
-            
+
             <input
               type="number"
               placeholder="ID Empleado"
-              value={editandoVacacion?.id_empleado || nuevaVacacion.id_empleado}
+              value={editandoVacacion?.idEmpleado || nuevaVacacion.idEmpleado}
               onChange={e => {
                 const val = e.target.value;
                 editandoVacacion
-                  ? setEditandoVacacion({ ...editandoVacacion, id_empleado: val })
-                  : setNuevaVacacion({ ...nuevaVacacion, id_empleado: val });
-              }}
-            />
-            
-            <input
-              type="date"
-              value={editandoVacacion?.fecha_inicio || nuevaVacacion.fecha_inicio}
-              onChange={e => {
-                const val = e.target.value;
-                editandoVacacion
-                  ? setEditandoVacacion({ ...editandoVacacion, fecha_inicio: val })
-                  : setNuevaVacacion({ ...nuevaVacacion, fecha_inicio: val });
+                  ? setEditandoVacacion({ ...editandoVacacion, idEmpleado: val })
+                  : setNuevaVacacion({ ...nuevaVacacion, idEmpleado: val });
               }}
             />
             <input
               type="date"
-              value={editandoVacacion?.fecha_fin || nuevaVacacion.fecha_fin}
+              value={editandoVacacion?.fechaInicio || nuevaVacacion.fechaInicio}
               onChange={e => {
                 const val = e.target.value;
                 editandoVacacion
-                  ? setEditandoVacacion({ ...editandoVacacion, fecha_fin: val })
-                  : setNuevaVacacion({ ...nuevaVacacion, fecha_fin: val });
+                  ? setEditandoVacacion({ ...editandoVacacion, fechaInicio: val })
+                  : setNuevaVacacion({ ...nuevaVacacion, fechaInicio: val });
+              }}
+            />
+            <input
+              type="date"
+              value={editandoVacacion?.fechaFin || nuevaVacacion.fechaFin}
+              onChange={e => {
+                const val = e.target.value;
+                editandoVacacion
+                  ? setEditandoVacacion({ ...editandoVacacion, fechaFin: val })
+                  : setNuevaVacacion({ ...nuevaVacacion, fechaFin: val });
               }}
             />
             <input
               type="number"
-              placeholder="Días disfrutados"
+              placeholder="Días"
               value={editandoVacacion?.dias || nuevaVacacion.dias}
               onChange={e => {
                 const val = e.target.value;
@@ -254,11 +223,11 @@ const obtenerPuestoEmpleado = (id) => {
         </div>
       )}
 
+      {/* Modal Constancia */}
       {mostrarConstancia && vacacionSeleccionada && (
         <div className="modal">
           <div className="modal-contenido constancia-modal">
             <h1>CONSTANCIA DE VACACIONES</h1>
-            
             <table>
               <thead>
                 <tr>
@@ -268,35 +237,32 @@ const obtenerPuestoEmpleado = (id) => {
               </thead>
               <tbody>
                 <tr>
-                  <td>{obtenerNombreEmpleado(vacacionSeleccionada.id_empleado)}</td>
-                  <td>{obtenerPuestoEmpleado(vacacionSeleccionada.id_empleado)}</td>
+                  <td>{vacacionSeleccionada.nombreCompleto}</td>
+                  <td>{vacacionSeleccionada.puesto}</td>
                 </tr>
               </tbody>
             </table>
-            
-            <p>{obtenerPuestoEmpleado(vacacionSeleccionada.id_empleado)}</p>
+
             <p>Centro o Unidad Administrativa/Operativa donde presta servicios el empleado</p>
-            
+
             <p><strong>Por este medio solicito me sea autorizado el goce de vacaciones, que solicito a partir del</strong></p>
-            
-            <p>1. <strong>día(s) hábil(es) del año a cuenta de</strong></p>
-            
+
             <div className="fecha-vacaciones">
               <div className="fecha-item">
-                <p>{new Date(vacacionSeleccionada.fecha_inicio).getDate()} Día</p>
-                <p>{new Date(vacacionSeleccionada.fecha_inicio).toLocaleString('es-ES', { month: 'short' })}</p>
-                <p>{new Date(vacacionSeleccionada.fecha_inicio).getFullYear()} Año</p>
+                <p>{new Date(vacacionSeleccionada.fechaInicio).getDate()} Día</p>
+                <p>{new Date(vacacionSeleccionada.fechaInicio).toLocaleString('es-ES', { month: 'short' })}</p>
+                <p>{new Date(vacacionSeleccionada.fechaInicio).getFullYear()} Año</p>
               </div>
               <div className="texto-centrado">al</div>
               <div className="fecha-item">
-                <p>{new Date(vacacionSeleccionada.fecha_fin).getDate()} Día</p>
-                <p>{new Date(vacacionSeleccionada.fecha_fin).toLocaleString('es-ES', { month: 'short' })}</p>
-                <p>{new Date(vacacionSeleccionada.fecha_fin).getFullYear()} Año</p>
+                <p>{new Date(vacacionSeleccionada.fechaFin).getDate()} Día</p>
+                <p>{new Date(vacacionSeleccionada.fechaFin).toLocaleString('es-ES', { month: 'short' })}</p>
+                <p>{new Date(vacacionSeleccionada.fechaFin).getFullYear()} Año</p>
               </div>
             </div>
-            
+
             <div className="linea-divisoria"></div>
-            
+
             <div className="firma-section">
               <div className="firma-box">
                 <p>Firma del Solicitante</p>
@@ -305,37 +271,34 @@ const obtenerPuestoEmpleado = (id) => {
                 <p>Firma Gerencia Administrativa (sello)</p>
               </div>
             </div>
-            
-            <div className="linea-divisoria"></div>
-            
+
             <div className="uso-exclusivo">
               <h2>PARA USO EXCLUSIVO DE CONTROL DE PERSONAL</h2>
-              
               <table>
                 <tbody>
                   <tr>
                     <td>Días otorgados a la fecha</td>
                     <td>{vacacionSeleccionada.dias}</td>
                     <td>Formulario No.</td>
-                    <td>{vacacionSeleccionada.id_vacacion}</td>
+                    <td>{vacacionSeleccionada.idVacacion}</td>
                   </tr>
                   <tr>
                     <td colSpan="4">
-                      Correspondientes al año laborado del: {formatDate(vacacionSeleccionada.fecha_inicio)} al {formatDate(vacacionSeleccionada.fecha_fin)}
+                      Correspondientes al año laborado del: {formatDate(vacacionSeleccionada.fechaInicio)} al {formatDate(vacacionSeleccionada.fechaFin)}
                     </td>
                   </tr>
                   <tr>
                     <td colSpan="4">
-                      Se disfrutarán: {vacacionSeleccionada.dias} día(s) de vacaciones, a partir del: {formatDate(vacacionSeleccionada.fecha_inicio)} al {formatDate(vacacionSeleccionada.fecha_fin)}
+                      Se disfrutarán: {vacacionSeleccionada.dias} día(s) de vacaciones, a partir del: {formatDate(vacacionSeleccionada.fechaInicio)} al {formatDate(vacacionSeleccionada.fechaFin)}
                     </td>
                   </tr>
                 </tbody>
               </table>
-              
+
               <div className="fecha-reincorporacion">
-                <p>Se presenta a sus labores nuevamente el día: {formatReincorporacionDate(vacacionSeleccionada.fecha_fin)}</p>
+                <p>Se presenta a sus labores nuevamente el día: {formatReincorporacionDate(vacacionSeleccionada.fechaFin)}</p>
               </div>
-              
+
               <table>
                 <tbody>
                   <tr>
@@ -347,25 +310,7 @@ const obtenerPuestoEmpleado = (id) => {
                 </tbody>
               </table>
             </div>
-            
-            <div className="linea-divisoria"></div>
-            
-            <div className="notas">
-              <ol>
-                <li>El servidor no podrá disfrutar vacaciones, sin previa notificación de autorización.</li>
-                <li>El Periodo de vacaciones deberá ser disfrutado en las fechas autorizadas para el efecto.</li>
-                <li>Cualquier modificación será resuelto por la Gerencia Administrativa.</li>
-                <li>En obligación del servidor darle copia de la notificación de vacaciones a su Jefe inmediato para su conocimiento.</li>
-              </ol>
-            </div>
-            
-            <div className="linea-divisoria"></div>
-            
-            <div className="vo-bo">
-              <p>Cálculos efectuados por:</p>
-              <p>Vo.Bo. Gerencia Administrativa</p>
-            </div>
-            
+
             <div className="modal-botones">
               <button onClick={() => setMostrarConstancia(false)}>Cerrar</button>
             </div>
@@ -373,11 +318,12 @@ const obtenerPuestoEmpleado = (id) => {
         </div>
       )}
 
+      {/* Tabla Principal */}
       <table className="tabla-puestos">
         <thead>
           <tr>
             <th>Acción</th>
-            <th>ID Vacacion</th>
+            <th>ID Vacación</th>
             <th>ID Empleado</th>
             <th>Nombre</th>
             <th>Inicio</th>
@@ -388,23 +334,17 @@ const obtenerPuestoEmpleado = (id) => {
         </thead>
         <tbody>
           {vacaciones.map(v => (
-            <tr key={v.id_vacacion}>
+            <tr key={v.idVacacion}>
               <td>
-                <button className="btn-editar" onClick={() => abrirModalEditar(v)}>
-                  <FontAwesomeIcon icon={faPen} />
-                </button>
-                <button className="btn-eliminar" onClick={() => eliminarVacacion(v.id_vacacion)}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-                <button className="btn-constancia" onClick={() => generarConstancia(v)}>
-                  <FontAwesomeIcon icon={faFileAlt} />
-                </button>
+                <button className='btn-editar' onClick={() => abrirModalEditar(v)}><FontAwesomeIcon icon={faPen} /></button>
+                <button  className='btn-eliminar' onClick={() => eliminarVacacion(v.idVacacion)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button onClick={() => generarConstancia(v)}><FontAwesomeIcon icon={faFileAlt} /></button>
               </td>
-              <td>{v.id_vacacion}</td>
-              <td>{v.id_empleado}</td>
-              <td>{obtenerNombreEmpleado(v.id_empleado)}</td>
-              <td>{v.fecha_inicio.split('T')[0]}</td>
-              <td>{v.fecha_fin.split('T')[0]}</td>
+              <td>{v.idVacacion}</td>
+              <td>{v.idEmpleado}</td>
+              <td>{v.nombreCompleto}</td>
+              <td>{v.fechaInicio?.split('T')[0]}</td> {/* ?. para evitar error si undefined */}
+              <td>{v.fechaFin?.split('T')[0]}</td>
               <td>{v.dias}</td>
               <td>{v.estado}</td>
             </tr>

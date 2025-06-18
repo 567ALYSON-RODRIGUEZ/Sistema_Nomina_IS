@@ -1,13 +1,15 @@
 package com.api.nomina.controlador;
 
 import com.api.nomina.datos.DVacaciones;
+import com.api.nomina.datos.DVacacionesdto;
 import com.api.nomina.modelo.EVacaciones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -21,16 +23,16 @@ public class restVacaciones {
     public ResponseEntity<?> crearVacacion(@RequestBody EVacaciones vacacion) {
         try {
             dvacaciones.insertarVacacion(
-                    vacacion.getId_empleado(),
-                    vacacion.getFecha_inicio(),
-                    vacacion.getFecha_fin(),
-                    vacacion.getDias(),
-                    vacacion.getEstado()
+                vacacion.getId_empleado(),
+                vacacion.getFecha_inicio(),
+                vacacion.getFecha_fin(),
+                vacacion.getDias(),
+                vacacion.getEstado()
             );
-            return ResponseEntity.ok("Vacación creada correctamente.");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Vacación creada correctamente.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", e.getMessage()));
+                .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
 
@@ -39,59 +41,59 @@ public class restVacaciones {
         try {
             if (!id.equals(vacacion.getId_vacacion())) {
                 return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error", "El ID en la URL no coincide con el del cuerpo."));
+                    .body(Collections.singletonMap("error", "El ID en la URL no coincide con el del cuerpo."));
             }
 
             dvacaciones.actualizarVacacion(
-                    id,
-                    vacacion.getId_empleado(),
-                    vacacion.getFecha_inicio(),
-                    vacacion.getFecha_fin(),
-                    vacacion.getDias(),
-                    vacacion.getEstado()
+                id,
+                vacacion.getId_empleado(),
+                vacacion.getFecha_inicio(),
+                vacacion.getFecha_fin(),
+                vacacion.getDias(),
+                vacacion.getEstado()
             );
             return ResponseEntity.ok("Vacación actualizada correctamente.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", e.getMessage()));
+                .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
 
-    @PatchMapping("/eliminar/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarVacacion(@PathVariable Integer id) {
         try {
             dvacaciones.eliminarVacacion(id);
             return ResponseEntity.ok("Vacación eliminada correctamente.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", e.getMessage()));
+                .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
 
     @GetMapping("/obtenerTodos")
     public ResponseEntity<?> obtenerTodas() {
         try {
-            List<EVacaciones> lista = dvacaciones.obtenerTodas();
+            List<DVacacionesdto> lista = dvacaciones.listarConNombrePuesto();
             return ResponseEntity.ok(lista);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", e.getMessage()));
+                .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
 
     @GetMapping("/obtenerPorId/{id}")
     public ResponseEntity<?> obtenerPorId(@PathVariable Integer id) {
         try {
-            EVacaciones vacacion = dvacaciones.obtenerPorId(id);
+            DVacacionesdto vacacion = dvacaciones.obtenerDetallePorId(id);
             if (vacacion != null) {
                 return ResponseEntity.ok(vacacion);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(Collections.singletonMap("error", "Vacación no encontrada"));
+                    .body(Collections.singletonMap("error", "Vacación no encontrada"));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", e.getMessage()));
+                .body(Collections.singletonMap("error", e.getMessage()));
         }
     }
 }
