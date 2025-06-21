@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "fecha_inicio", type = Date.class),
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "fecha_fin", type = Date.class),
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "dias", type = Integer.class),
-            @StoredProcedureParameter(mode = ParameterMode.IN, name = "estado", type = String.class)
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "estado", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_anio", type = String.class),
         }
     ),
     @NamedStoredProcedureQuery(
@@ -32,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "fecha_fin", type = Date.class),
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "dias", type = Integer.class),
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "estado", type = String.class),
+            @StoredProcedureParameter(mode = ParameterMode.IN, name = "periodo_anio", type = String.class),
             @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, name = "result", type = void.class)
         }
     )
@@ -66,6 +68,9 @@ public class EVacaciones {
 
     @JsonProperty("estado")
     private String estado;
+    
+    @JsonProperty("periodo_anio")
+    private Integer periodo_anio;
     
     @Transient
     private String nombre_empleado;

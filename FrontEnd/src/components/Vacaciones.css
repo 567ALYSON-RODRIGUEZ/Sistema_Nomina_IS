@@ -25,32 +25,42 @@
   align-items: center;
 }
 
-.btn-nuevo {
-  background-color: #5fbe62;
-  color: white;
+.btn-nuevo,
+.btn-buscar,
+.btn-constancia {
+  display: inline-block;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
+  opacity: 1;
+  visibility: visible;
+  color: white;
+}
+
+.btn-nuevo {
+  background-color: #5fbe62;
+}
+
+.btn-nuevo:hover {
+  background-color: #4da74e;
 }
 
 .btn-buscar {
   background-color: #7a8b95;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
+}
+
+.btn-buscar:hover {
+  background-color: #667781;
 }
 
 .btn-constancia {
-  background-color: #4a6fa5;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
+  background-color: #17a2b8;
   margin-left: 5px;
+}
+
+.btn-constancia:hover {
+  background-color: #138496;
 }
 
 input[type="text"] {
@@ -80,7 +90,6 @@ input[type="text"] {
 
 .btn-editar {
   color: black;
-  background: transparent;
   font-size: 10px;
   padding: 8px 12px;
   border: 1px solid #46576b;
@@ -90,7 +99,6 @@ input[type="text"] {
 
 .btn-eliminar {
   color: black;
-  background: transparent;
   border: 1px solid #46576b;
   font-size: 10px;
   padding: 8px 12px;
@@ -153,7 +161,7 @@ input[type="text"] {
 
 .modal-botones button:first-child {
   background-color: #4caf50;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .modal-botones button:last-child {
@@ -187,13 +195,13 @@ input[type="text"] {
   margin: 10px 0;
 }
 
-.constancia-modal table, 
-.constancia-modal th, 
+.constancia-modal table,
+.constancia-modal th,
 .constancia-modal td {
   border: 1px solid #333;
 }
 
-.constancia-modal th, 
+.constancia-modal th,
 .constancia-modal td {
   padding: 8px;
   text-align: left;
@@ -258,4 +266,167 @@ input[type="text"] {
   text-align: right;
   margin-top: 30px;
   font-style: italic;
+}
+
+/* Estilos para días disponibles */
+.dias-disponibles {
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #f0f8ff;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.texto-error {
+  color: #ff0000;
+  margin-left: 10px;
+}
+
+/* Resumen de vacaciones */
+.resumen-vacaciones {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.resumen-vacaciones h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.dias-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.dias-info p {
+  margin: 5px 0;
+}
+
+.btn-historial {
+  background-color: #6c757d;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-historial:hover {
+  background-color: #5a6268;
+}
+
+/* Modal de historial */
+.historial-modal {
+  max-width: 800px;
+}
+
+.historial-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.tabla-historial {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-historial th,
+.tabla-historial td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.tabla-historial th {
+  background-color: #f2f2f2;
+}
+
+/* Estados */
+.estado-aprobado {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.estado-pendiente {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.estado-rechazado {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Formulario modal */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Botones de acción */
+.acciones button {
+  margin-right: 5px;
+  padding: 5px 8px;
+}
+
+/* Asegura que los botones de acción sean siempre visibles */
+.acciones button {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: inline-block !important;
+}
+
+/* Opcional: mejora alineación si los íconos están descentrados */
+.acciones button svg {
+  vertical-align: middle;
+}
+
+/* Opcional: asegura que las celdas no estén ocultando contenido */
+.acciones {
+  white-space: nowrap;
+}
+
+/* Estilo claro y consistente para todos los botones de acciones */
+.acciones button {
+  background-color: #e0e0e0;
+  border: 1px solid #aaa;
+  color: #333;
+  padding: 6px 8px;
+  margin-right: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acciones button:hover {
+  background-color: #d0d0d0;
+}
+
+/* Íconos visibles y centrados */
+.acciones button svg {
+  color: #333;
+  font-size: 16px;
+  pointer-events: none;
 }
